@@ -234,6 +234,8 @@ class ProductCreateUpdateView(generic.UpdateView):
             ctx['title'] = _('Create new %s product') % self.product_class.name
         else:
             ctx['title'] = ctx['product'].get_title()
+            # @vivek: for passing context to add variant functionality
+            ctx['product_class_slug'] = self.product_class.slug
         return ctx
 
     def get_form_kwargs(self):

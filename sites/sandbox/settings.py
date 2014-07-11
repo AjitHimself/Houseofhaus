@@ -404,6 +404,8 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
+# @vivek:
+LOGIN_URL= '/accnt/login/'
 LOGIN_REDIRECT_URL = '/'
 APPEND_SLASH = True
 

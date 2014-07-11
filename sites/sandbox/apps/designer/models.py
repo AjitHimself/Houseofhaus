@@ -1,8 +1,12 @@
+from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from datetime import datetime, date
 
 from django.db import models
 from oscar.core.compat import AUTH_USER_MODEL
+
+from oscar.models.fields import NullCharField, AutoSlugField
+
 #from oscar.apps.catalogue.models import Product
 
 # Create your models here.
@@ -14,7 +18,11 @@ class Designer(models.Model):
 	#first_name = models.CharField(_('First name'), max_length=255, blank=True, null=True)
 	#last_name = models.CharField(_('Last name'), max_length=255, blank=True, null= True)
 	
+	slug = models.SlugField(_('Slug'), max_length=255,editable=False)
+
 	gender= models.CharField(max_length=30, choices= {('Male','Male'), 
+
+
 	                                                                                 ('Female','Female'),}, null=True )
 	#email = models.EmailField(_('Email ID'), unique=True, null =True)
 	date_joined = models.DateTimeField(_('Date joined'),auto_now_add=True, null=True)
@@ -28,14 +36,18 @@ class Designer(models.Model):
 
 	def save(self,*args, **kwargs):
 
-		if not self.id:
+		#if not self.id:
 			super(Designer, self).save(*args,**kwargs)
 			full_name = self.designer.first_name + " " + self.designer.last_name
 			self.name = full_name
+			self.slug = self.designer.first_name + "-" + self.designer.last_name
 			super(Designer, self).save(*args, **kwargs)
 
+	def get_absolute_url(self):
+		return reverse('designer:profile',kwargs={'designer_slug': self.slug, 'pk': self.id})
+
 	def __unicode__(self):
-		return unicode(self.designer)
+		return unicode(self.name)
 
 
 class DesPostCategory(models.Model):

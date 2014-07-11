@@ -5,6 +5,8 @@ from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render
 from django.contrib import messages
+# @vivek:
+from django.conf import settings
 from django.contrib.auth.views import redirect_to_login
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse_lazy
@@ -23,7 +25,7 @@ def staff_member_required(view_func, login_url=None):
     redirect URL to be specified.
     """
     if login_url is None:
-        login_url = reverse_lazy('customer:login')
+        login_url = settings.LOGIN_URL
 
     @wraps(view_func)
     def _checklogin(request, *args, **kwargs):
@@ -94,7 +96,7 @@ def permissions_required(permissions, login_url=None):
     message, analogous to Django's permission_required decorator.
     """
     if login_url is None:
-        login_url = reverse_lazy('customer:login')
+        login_url = settings.LOGIN_URL
 
     def _check_permissions(user):
         outcome = check_permissions(user, permissions)

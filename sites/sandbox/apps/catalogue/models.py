@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 
 from django.db import models
@@ -7,7 +8,7 @@ from oscar.apps.catalogue.abstract_models import AbstractProduct
 
 class Product(AbstractProduct): 
     
-	designer= models.ForeignKey(Designer,verbose_name=_("Designer"),null=True, blank=True)     
+	designer= models.ForeignKey(Designer,verbose_name=_("Designer"),null=True, blank=True, related_name='products')     
 	
 	video =models.FileField(upload_to='Product_videos',blank=True,null=True)     
 
@@ -20,19 +21,23 @@ class Product(AbstractProduct):
 
 class DesLookbook(models.Model):
     
-	designer= models.ForeignKey(Designer, verbose_name=_("Designer"),null=True, blank=True)
+	designer= models.ForeignKey(Designer, verbose_name=_("Designer"),null=True, blank=True, related_name='lookbooks')
     
 	name= models.CharField(_("Lookbook name"),max_length=128,null=True,unique= True)
 
-	products= models.ManyToManyField(Product, verbose_name=_("Product"), related_name= 'des_product', null=True,blank=True)
-
-
+	products= models.ManyToManyField(Product, verbose_name=_("Product"), related_name= 'lookbooks', null=True,blank=True)
 
 	description= models.TextField(_("Message"))
+
+	slug = models.SlugField(_('Slug'), max_length=255,editable=True, null=True)
 
 	class Meta:
 		verbose_name = _("Designer Lookbook")
 		verbose_name_plural = _("Designer Lookbooks")
+
+	def get_absolute_url(self):
+		designer_slug= self.designer.slug 
+		return reverse('designer:lookbook',kwargs={'designer_slug':designer_slug,'lookbook_slug': self.slug, 'pk': self.id, })
 
 	def __unicode__(self):
 		return unicode(self.name)

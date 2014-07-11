@@ -1,13 +1,23 @@
 from django.views.generic import TemplateView, RedirectView
 from django.core.urlresolvers import reverse
-
+from designer.models import Designer
 
 class HomeView(TemplateView):
     """
     This is the home page and will typically live at /
     """
+    model = Designer
     template_name = 'promotions/home.html'
 
+    # @vivek: Created context to show on the first page 
+    # so created context for designer
+    def get_context_data(self, **kwargs):
+        context = super(HomeView, self).get_context_data(**kwargs)
+        # context['name'] = self.name
+        # context['image'] = self.profile_pic
+        context['designers'] = Designer.objects.all()
+        #context['count']=Designer.objects.count()
+        return context
 
 class RecordClickView(RedirectView):
     """

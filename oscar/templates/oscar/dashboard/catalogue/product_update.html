@@ -45,9 +45,9 @@
                             {% endif %}
                             <li{% if not product %} class="active"{% endif %}><a href="#product_details" data-toggle="tab">{% trans 'Product details' %}</a></li>
                             <li><a href="#product_recommended" data-toggle="tab">{% trans 'Recommended Products' %}</a></li>
-                            {% if product.variants.exists %}
+                            <!-- {% if product.variants.exists %} -->
                                 <li><a href="#product_variants" data-toggle="tab">{% trans 'Product variants' %}</a></li>
-                            {% endif %}
+                            <!-- {% endif %} -->
                             <li><a href="#product_attributes" data-toggle="tab">{% trans 'Product attributes' %}</a></li>
                             <li><a href="#product_category" data-toggle="tab">{% trans 'Product category' %}</a></li>
                             <li><a href="#product_images" data-toggle="tab">{% trans 'Product images' %}</a></li>
@@ -204,14 +204,40 @@
                                                 <tr>
                                                     <td>{{ variant.get_title }}</td>
                                                     <td>{{ variant.attribute_summary }}</td>
-                                                    <td><a href="{% url 'dashboard:catalogue-product' pk=variant.id %}" class="btn btn-primary">{% trans "Edit" %}</a></td>
+                                                    <td>
+                                                    <div class="btn-toolbar">
+                                        <div class="btn-group">
+                                            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                                {% trans "Actions" %}
+                                                <span class="caret"></span>
+                                            </a>
+                                            <ul class="dropdown-menu pull-right">
+                                                <li>
+                                                    <a href="{% url 'dashboard:catalogue-product' pk=variant.id %}">{% trans "Edit" %}</a>
+                                                </li>
+                                                <li> 
+                                                    <a href="{{ product.get_absolute_url }}"> {% trans "View on site" %}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="{% url 'dashboard:catalogue-product-delete' pk=variant.id %}">{% trans "Delete" %}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    </td>
                                                 </tr>
                                             {% endfor %}
                                         </table>
+                                        <a href="/en-gb/dashboard/catalogue/products/create/{{product_class_slug}}" class="btn btn-primary">Add Variant</a>
                                     {% endblock product_variants_content %}
                                 </div>
                             {% endif %}
+
+                          
+                            <!-- <a href="/en-gb/dashboard/catalogue/products/create/{{product_class_slug}}" class="btn btn-primary">Add Variant</a> -->
                         {% endwith %}
+
+                        
                     {% endblock product_variants %}
 
                     {% block product_attributes %}
@@ -292,8 +318,6 @@
                                             <th>{% trans "Low stock threshold" %}</th>
                                             <th>{% trans "Currency" %}</th>
                                             <th>{% trans "Cost price" %}</th>
-                                            <th>{% trans "Rent price" %}</th>
-                                            <th>{% trans "Rent Deposite %" %}</th>
                                             <th>{% trans "Price (excl tax)" %}</th>
                                             <th>{% trans "Retail price" %}</th>
                                             <th>{% trans "Delete?" %}</th>
@@ -324,8 +348,6 @@
                                                 <td>{% include "partials/form_field.html" with field=stockrecord_form.low_stock_threshold nolabel=True %}</td>
                                                 <td>{% include "partials/form_field.html" with field=stockrecord_form.price_currency nolabel=True %}</td>
                                                 <td>{% include "partials/form_field.html" with field=stockrecord_form.cost_price nolabel=True %}</td>
-                                                <td>{% include "partials/form_field.html" with field=stockrecord_form.rent_cost nolabel=True %}</td>
-                                                <td>{% include "partials/form_field.html" with field=stockrecord_form.rent_deposit nolabel=True %}</td>
                                                 <td>{% include "partials/form_field.html" with field=stockrecord_form.price_excl_tax nolabel=True %}</td>
                                                 <td>{% include "partials/form_field.html" with field=stockrecord_form.price_retail nolabel=True %}</td>
                                                 <td>

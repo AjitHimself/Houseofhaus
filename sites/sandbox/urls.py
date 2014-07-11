@@ -33,7 +33,10 @@ urlpatterns += i18n_patterns('',
     # Custom functionality to allow dashboard users to be created
     url(r'gateway/', include('apps.gateway.urls')),
     url(r'request/', include('apps.request.urls', namespace='request', app_name='request')),
-    
+    # @vivek: added new url for designer access on first page
+    url(r'designer/', include('apps.designer.urls', namespace='designer', app_name='designer')),
+
+
     #url(r'designer/', include('apps.designer.urls', namespace='dashboard', app_name='designer'), ),  ##ADDED BY ME
     # Oscar's normal URLs
     url(r'', include(shop.urls)),

@@ -1,0 +1,57 @@
+{% extends "layout_2_col.html" %}
+
+{% load thumbnail %}
+{% load i18n %}
+{% load display_tags %}
+{% load staticfiles %}
+
+{% block title %}
+    {{ summary }} | {{ block.super }}
+{% endblock %}
+
+{% block description %}
+    {{ category.description|default:""|striptags }}
+{% endblock %}
+
+{% block headertext %}{{ summary }}{% endblock %}
+
+{% block breadcrumbs %}
+    <ul class="breadcrumb">
+        <li>
+            <a href="{{ homepage_url }}"><strong>Home</strong>/</a>
+           <!--  <span class="divider">/</span> -->
+        </li>
+            <li class="active">{{designer}}</li>
+    </ul>
+{% endblock breadcrumbs %}
+
+{% block column_left %}
+<p>ghgjhgj</p>
+{% endblock %}
+
+{% block content %}
+
+
+<img src="{{ designer.profile_pic }}" alt="{{ designer.designer }}" >
+<p>{{designer.name}}</p>
+<p>{{designer.date_joined}}</p>
+
+
+{% for lookbook in designer.lookbooks.all %}
+<p><strong>{{lookbook.name}}</strong></p>
+
+{% for product in lookbook.products.all %}
+		{% block product_image %}
+            <div class="image_container">
+                {% with image=product.primary_image %}
+                    {% thumbnail image.original "x155" upscale=False as thumb %}
+                    <a href="{{ product.get_absolute_url }}"><img src="{{ thumb.url }}" alt="{{ product.get_title }}" class="thumbnail"></a>
+                    {% endthumbnail %}
+                {% endwith %}
+            </div>
+        {% endblock %}
+{% endfor %}
+
+<li class="divider"></li>
+{% endfor %}        
+{% endblock %}
