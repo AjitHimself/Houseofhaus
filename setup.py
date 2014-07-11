@@ -22,9 +22,9 @@ PY3 = sys.version_info >= (3, 0)
 if PROJECT_DIR:
     os.chdir(PROJECT_DIR)
 
-setup(name='django-oscar',
+setup(name='Houseofhaus',
       version=get_version().replace(' ', '-'),
-      url='https://github.com/tangentlabs/django-oscar',
+      url='https://github.com/AJpatil/Houseofhaus',
       author="David Winterbottom",
       author_email="david.winterbottom@tangentlabs.co.uk",
       description="A domain-driven e-commerce framework for Django",
