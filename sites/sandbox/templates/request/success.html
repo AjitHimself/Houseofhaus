@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% load i18n %}
+
+{% block title %}
+    {% trans 'Register' %} | {{ block.super }}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <ul class="breadcrumb">
+        <li>
+            <a href="{{ homepage_url }}">{% trans 'Home' %}</a>
+            <span class="divider">/</span>
+        </li>
+        <li class="active">{% trans 'Request Submitted' %}</li>
+    </ul>
+{% endblock %}
+
+{% block headertext %}
+    {% trans "Request Received" %}
+{% endblock %}
+
+
+{% block content %}
+<font color="Red">
+	We are glad that u want to join us.<BR>
+	We will contact u soon. 
+</font>
+</body>
+</html>
+{% endblock content %}

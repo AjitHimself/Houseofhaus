@@ -1,0 +1,58 @@
+{% extends 'dashboard/layout.html' %}
+{% load i18n %}
+{% load thumbnail %}
+{% load staticfiles %}
+{% load sorting_tags %}
+
+{% block body_class %}{{ block.super }} catalogue{% endblock %}
+
+{% block title %}
+    {% trans "Lookbooks" %} | {{ block.super }}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <ul class="breadcrumb">
+        <li>
+            <a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a>
+            <span class="divider">/</span>
+        </li>
+        <li class="active">{% trans "Lookbooks" %}</li>
+    </ul>
+{% endblock %}
+
+{% block header %}
+    <div class="page-header action">
+        <h1>{% trans "Lookbooks" %}</h1>
+    </div>
+
+    <ul>
+
+ <ul class="nav nav-tabs">
+                    <li{% if 'recently_edited' not in request.GET %} class="active"{% endif %}> <a href=".">{% trans "All" %}</a> </li>
+                    <li{% if 'recently_edited' in request.GET %} class="active"{% endif %}> <a href="?recently_edited=1">{% trans "Recently edited" %}</a> </li>
+ </ul>
+
+{% for lookbook in lookbooks %}
+    <li>{{ lookbook.name }} - {{ lookbook.designer }} - {{ lookbook.description }} - 
+    {% for product in lookbook.products.all %}
+    <li>
+    	{% with image=product.primary_image %}
+                                            {% thumbnail image.original "70x70" upscale=False as thumb %}
+                                            <a href="{{ image.original.url }}" rel="lightbox_{{ product.upc|default:"-" }}" class="sub-image">
+                                                <img src="{{ thumb.url }}" alt="{{ product.get_title }}" data-description="{% if image.caption %}{{ image.caption }}{% endif %}">
+                                            </a>
+                                            {% endthumbnail %}
+                                        {% endwith %}
+    </li>
+    {% endfor %}
+    </li>
+{% empty %}
+    <li>No Lookbooks yet.</li>
+{% endfor %}
+</ul>
+
+{% endblock header %}
+
+
+
+

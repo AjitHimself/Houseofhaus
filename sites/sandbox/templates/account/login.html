@@ -1,0 +1,81 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load account %}
+{% load url from future %}
+
+
+
+{% load i18n %}
+
+{% block title %}
+    {% trans 'Register' %} | {{ block.super }}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <ul class="breadcrumb">
+        <li>
+            <a href="{{ homepage_url }}">{% trans 'Home' %}</a>
+            <span class="divider">/</span>
+        </li>
+        <li class="active">{% trans 'Sign In' %}</li>
+    </ul>
+{% endblock %}
+
+
+{% block headertext %}
+    {% trans "Sign in" %}
+{% endblock %}
+
+
+{% block content %}
+
+{% if socialaccount.providers  %}
+<h4><p>{% blocktrans with site.name as site_name %}Please sign in with one
+of your existing third party accounts or a <font color="Orange">{{site_name}}</font> account.</p></h4>{% endblocktrans %}
+
+
+<!-- <div class="span6 register_form"> -->
+
+<div class="well">
+<div class="socialaccount_ballot">
+
+  <ul class="socialaccount_providers">
+    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+  </ul>
+
+</div>
+</div>
+
+<div class="login-or">{% trans 'Or' %}</div>
+
+{% include "socialaccount/snippets/login_extra.html" %}
+
+{% else %}
+<p>{% blocktrans %}If you have not created an account yet, then please
+<a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
+{% endif %}
+
+
+<form class="well" method="POST" action="{% url 'account_login' %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+  <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+  <button name="registration_submit" type="submit" value="Register" class="btn btn-primary btn-medium js-disable-on-click" data-loading-text="{%trans 'Logging in...' %}">{% trans 'Login' %}</button>
+</form>
+</div>
+
+
+<div class="footnote">
+           <h4><p>Or, <a href="{{ signup_url }}">Register</a>
+            for a <font color="Orange">House of Haus</font> account.</p></h4><br><br>
+</div>
+
+
+
+{% endblock %}
+
+<!-- <button class="primaryAction" type="submit">{% trans "Sign In" %}</button> -->

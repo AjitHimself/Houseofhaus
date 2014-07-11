@@ -1,0 +1,4 @@
+--admin is the template from django admin to override its templating.
+
+--account, openid, socialaccount, base.html are from allauth
+--dun put base.html outside otherwise it will override oscars base.html

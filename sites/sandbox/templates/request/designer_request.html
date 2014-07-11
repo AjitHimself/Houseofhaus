@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% load i18n %}
+
+{% block title %}
+    {% trans 'Register' %} | {{ block.super }}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <ul class="breadcrumb">
+        <li>
+            <a href="{{ homepage_url }}">{% trans 'Home' %}</a>
+            <span class="divider">/</span>
+        </li>
+        <li class="active">{% trans 'Request' %}</li>
+    </ul>
+{% endblock %}
+
+{% block headertext %}
+    {% trans "We welcome u to join us." %}
+{% endblock %}
+
+
+<!-- No need to metion form.visible_fields or {{ form.as_p }}  thses will be taken care by form_field.html
+ -->
+<!-- 
+<form action="" method="post">{% csrf_token %}
+    {{ form.as_p }}  ###IT displays all the form field of form referenced by form_class
+    <input type="submit" value="Update" />
+</form> -->
+
+
+{% block content %}
+    <div class="row-fluid">
+        <div class="span6 register_form">
+            <form action="." method="post" class="well">
+                {% csrf_token %}
+                {% include "partials/form_fields.html"  %}
+                <button name="registration_submit" type="submit" value="Submit Request" class="btn btn-primary btn-large js-disable-on-click" data-loading-text="{%trans 'Submitting...' %}">{% trans 'Submit Request' %}</button>
+                {% if cancel_url %}
+                    {% trans "or" %} <a href="{{ cancel_url }}">{% trans "cancel" %}</a>.
+                {% endif %}
+            </form>
+        </div>
+    </div>
+{% endblock content %}
