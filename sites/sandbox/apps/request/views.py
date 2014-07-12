@@ -55,7 +55,6 @@ User = get_user_model()
 
 
 
-
 class Designer_Request(FormView):
     template_name = 'request/designer_request.html'
     success_url = 'success/'    ##to redirect to the same url we can use success_url="."
