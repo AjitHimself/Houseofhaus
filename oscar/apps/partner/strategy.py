@@ -33,7 +33,6 @@ class Selector(object):
         # stockrecord but charging zero tax.
         return Default(request)
 
-
 class Base(object):
     """
     The base strategy class
@@ -71,8 +70,8 @@ class Base(object):
             "information."
         )
 
-# Here we can add a mechanism which will only fetch data for product and not groups/line
-# So every calculation will be on product and not the line
+    # Here we can add a mechanism which will only fetch data for product and not groups/line
+    # So every calculation will be on product and not the line
 
     def fetch_for_group(self, product):
         """
