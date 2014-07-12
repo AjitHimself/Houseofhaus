@@ -16,10 +16,12 @@ ProductClass = get_model('catalogue', 'ProductClass')
 ProductImage = get_model('catalogue', 'ProductImage')
 ProductRecommendation = get_model('catalogue', 'ProductRecommendation')
 
+ProductFilter = get_model('catalogue', 'ProductFilter')
 
-class AttributeInline(admin.TabularInline):
+
+class AttributeValueInline(admin.TabularInline):
     model = ProductAttributeValue
-
+    extra = 2
 
 class ProductRecommendationInline(admin.TabularInline):
     model = ProductRecommendation
@@ -40,27 +42,31 @@ class ProductClassAdmin(admin.ModelAdmin):
     list_display = ('name', 'requires_shipping', 'track_stock')
     inlines = [ProductAttributeInline]
 
+###########################################################
+class ProductFilterInline(admin.TabularInline):
+    model = ProductFilter
+
  #copied to sandbox.apps.catalogue.admin
 class ProductAdmin(admin.ModelAdmin):
-	list_display = ('get_title', 'upc', 'get_product_class','designer', 'on_rent', 'is_top_level', 'is_variant', 'attribute_summary', 'date_created',)
+    list_display = ('get_title', 'upc', 'get_product_class','designer', 'is_top_level', 'is_variant', 'attribute_summary', 'date_created',)
 
-	list_filter = ('designer',)
-	prepopulated_fields = {"slug": ("title",)}
-	inlines = [AttributeInline, CategoryInline, ProductRecommendationInline]
-	
-	
+    list_filter = ('designer',)
+    prepopulated_fields = {"slug": ("title",)}
+    inlines = [AttributeValueInline,ProductFilterInline, CategoryInline, ProductRecommendationInline]
+    
+    
 """
-	fieldsets = [
+    fieldsets = [
         (None, { 'fields': [('get_title', 'upc', 'get_product_class', 'is_top_level',
                     'is_variant', 'attribute_summary',
                     'date_created')] } ),
                      ]
 """
 """
-	def save_model(self, request, obj, form, change):
-		if getattr(obj, 'designer', None) is None:
-			obj.designer = request.user
-		obj.save()
+    def save_model(self, request, obj, form, change):
+        if getattr(obj, 'designer', None) is None:
+            obj.designer = request.user
+        obj.save()
 """
 
 class ProductAttributeAdmin(admin.ModelAdmin):

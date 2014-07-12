@@ -9,11 +9,11 @@ from django.contrib.auth import logout as auth_logout, login as auth_login
 from django.contrib.sites.models import get_current_site
 from django.conf import settings
 
+from oscar.core.compat import get_user_model
 from oscar.core.loading import get_model
 from oscar.views.generic import PostActionMixin
 from oscar.apps.customer.utils import get_password_reset_url
 from oscar.core.loading import get_class, get_profile_class, get_classes
-from oscar.core.compat import get_user_model
 from . import signals
 
 PageTitleMixin, RegisterUserMixin = get_classes(
@@ -34,7 +34,8 @@ Email = get_model('customer', 'Email')
 ProductAlert = get_model('customer', 'ProductAlert')
 CommunicationEventType = get_model('customer', 'CommunicationEventType')
 
-User = settings.AUTH_USER_MODEL
+User = get_user_model()
+#User = settings.AUTH_USER_MODEL
 
 
 # =======
@@ -255,9 +256,9 @@ class ProfileView(PageTitleMixin, generic.TemplateView):
         field_data = []
 
         # # Check for custom user model
-        # for field_name in User._meta.additional_fields:
-        #     field_data.append(
-        #         self.get_model_field_data(user, field_name))
+        for field_name in User._meta.additional_fields:
+            field_data.append(
+                self.get_model_field_data(user, field_name))
 
         # Check for profile class
         profile_class = get_profile_class()

@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from six import with_metaclass
 from django.contrib import admin
 from django.db import models
+from treebeard.admin import TreeAdmin
 
 from oscar.core.loading import get_model   #SEE ITS OTHER WAY TO IMPORT MODELS
 
@@ -10,7 +11,7 @@ from oscar.apps.catalogue.admin import *  # noqa
 #from oscar.apps.catalogue.admin import AttributeInline, CategoryInline, ProductRecommendationInline
 #from oscar.apps.catalogue.models import Product
 
-from apps.catalogue.models import Product,DesLookbook
+from apps.catalogue.models import Product,DesLookbook,FilterType,FilterOption,ProductFilter 
 from apps.designer.models import Designer
 
 ProductImage = get_model('catalogue', 'ProductImage')   #same as from apps.catalogue.models import ProductImage
@@ -89,49 +90,77 @@ class RelatedFieldAdmin(with_metaclass(RelatedFieldAdminMetaclass,admin.ModelAdm
 #    address__foo = getter_for_related_field('address__foo', short_description='Custom Name')
 
 
-
 class DesLookbookAdmin(admin.ModelAdmin):
-	list_display = ('name','designer') 
-	list_display_links = ('name','designer',) 
-	list_per_page = 50 
-	ordering = ['-designer'] 
-        filter_horizontal = ('products',)
-        #inlines = [DesLookbookProductInline]
+    list_display = ('name','designer','slug',)
+    list_display_links = ('name','designer',) 
+    prepopulated_fields = {"slug": ("name",)}
+    list_per_page = 50 
+    ordering = ['-designer'] 
+    filter_horizontal = ('products',)
+    #inlines = [DesLookbookProductInline]
 
-'''
+
+
+class ProductImageAdmin(admin.ModelAdmin):
+    product__parent = getter_for_related_field('product__parent', short_description='Parent Product')
+    product__categories = getter_for_related_field('product__categories', short_description='Product Category')
+    list_display = ('product','display_order','product__parent','product__categories',)
+    list_filter = ('product__categories','product__product_class','product__date_created',)
+
+
+class ProductFilterInline(admin.TabularInline):
+    model = ProductFilter
+
+
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('get_title', 'upc', 'get_product_class', 'is_top_level',
-                    'is_variant', 'attribute_summary',
-                    'date_created')
-	fieldsets = [
+    list_display = ('get_title', 'upc', 'get_product_class','designer', 'is_top_level', 'is_variant', 'attribute_summary', 'date_created',)
+
+    list_filter = ('designer',)
+    prepopulated_fields = {"slug": ("title",)}
+    inlines = [AttributeValueInline, ProductFilterInline,CategoryInline, ProductRecommendationInline]
+
+    
+"""
+    fieldsets = [
         (None, { 'fields': [('get_title', 'upc', 'get_product_class', 'is_top_level',
                     'is_variant', 'attribute_summary',
                     'date_created')] } ),
-    ]
- 
-	prepopulated_fields = {"slug": ("title",)}
-	inlines = [AttributeInline, CategoryInline, ProductRecommendationInline]
-	
-		def save_model(self, request, obj, form, change):
-		if getattr(obj, 'designer', None) is None:
-			obj.designer = request.user
-		obj.save()
-'''
+                     ]
+"""
+"""
+    def save_model(self, request, obj, form, change):
+        if getattr(obj, 'designer', None) is None:
+            obj.designer = request.user
+        obj.save()
+"""
 
-class ProductImageAdmin(admin.ModelAdmin):
-	product__parent = getter_for_related_field('product__parent', short_description='Parent Product')
-	product__categories = getter_for_related_field('product__categories', short_description='Product Category')
-	list_display = ('product','display_order','product__parent','product__categories',)
-	list_filter = ('product__categories','product__product_class','product__date_created',)
+# class FilterOptionAdmin(admin.ModelAdmin):
+#     list_display = ('name','category',)
+#     list_display_links = ('name',) 
+#     list_filter = ('category',)
+
+
+class FilterOptionInline(admin.TabularInline):
+    model = FilterOption
+    extra = 5
+
+class FilterTypeAdmin(admin.ModelAdmin):
+    list_display = ('name','category',)
+    list_display_links = ('name',) 
+    list_filter = ('category',)
+    inlines = [FilterOptionInline,]
+    
 
 
 """
 class ProductAdmin(admin.ModelAdmin):
-	exclude=('video',)
+    exclude=('video',)
 """
 admin.site.register(DesLookbook, DesLookbookAdmin) 
-#admin.site.register(Product, ProductAdmin)          #Model Product is already registered.
+# admin.site.unregister(Product)          #Model Product is already registered.
+# admin.site.register(Product,ProductAdmin) 
 admin.site.register(ProductImage,ProductImageAdmin)  #Even though ProductImage is present in admin of oscar but it isn't registered with ProductImageAdmin 
+admin.site.register(FilterType,FilterTypeAdmin)
 #Its like: admin.site.register(ProductImage)
 
 

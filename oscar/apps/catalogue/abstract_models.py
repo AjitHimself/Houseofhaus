@@ -18,10 +18,12 @@ from django.utils.translation import ugettext_lazy as _, pgettext_lazy
 from django.utils.functional import cached_property
 
 from treebeard.mp_tree import MP_Node
+#from filters.models import FilterOption
 
 from oscar.core.utils import slugify
 from oscar.core.loading import get_classes, get_model
 from oscar.models.fields import NullCharField, AutoSlugField
+
 
 ProductManager, BrowsableProductManager = get_classes(
     'catalogue.managers', ['ProductManager', 'BrowsableProductManager'])

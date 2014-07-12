@@ -39,12 +39,13 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'virt7',
+        'NAME': 'workoscar',
         'USER': 'pavan',
         'PASSWORD': 'vivenkyan',
         'HOST': '127.0.0.1',
         'PORT': '5432',
         #'ATOMIC_REQUESTS': True
+        #'OPTIONS': {'autocommit': True,}
     }
 }
 
@@ -346,7 +347,6 @@ LOGGING = {
 
 
 INSTALLED_APPS = [
-	'accounts',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -373,9 +373,9 @@ INSTALLED_APPS = [
     'designer',
     'rent',
     'apps.dashboard.designer',
+    'accounts',
     'request',
-    # @ajit: For datepicker on Rent
-    'datetimewidget',
+    #'filters',
 ]
 from oscar import get_core_apps
 INSTALLED_APPS = INSTALLED_APPS + get_core_apps(['apps.catalogue','apps.order','apps.partner','apps.dashboard'])
@@ -383,7 +383,7 @@ INSTALLED_APPS = INSTALLED_APPS + get_core_apps(['apps.catalogue','apps.order','
 
 #Don't forget the SITE_ID (A model for storing the domain and name attributes of a Web site. 
 #The SITE_ID setting specifies the database ID of the site object associated with that particular #settings file.)
-SITE_ID = 1
+SITE_ID = 2
 
 AUTH_USER_MODEL= 'accounts.Users'
 
@@ -404,7 +404,7 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-# @vivek:
+
 LOGIN_URL= '/accnt/login/'
 LOGIN_REDIRECT_URL = '/'
 APPEND_SLASH = True
@@ -537,13 +537,6 @@ OSCAR_DASHBOARD_NAVIGATION += [
       },
 
 ]
-
-# ===============
-# Datetimewidget 
-# ===============
-USE_L10N = True
-USE_TZ = True 
-SE_I18N = True
 
 # LESS/CSS/statics
 # ================
