@@ -9,13 +9,13 @@
     {% if session.price.excl_tax == 0 %}
         <h2 class="price_color">{% trans "Free" %}</h2>
     {% elif session.price.is_tax_known %}
-        <h2 class="price_color">{{ session.price.incl_tax|currency:session.price.currency }}</h2>
+        <h2 class="price_color">{% trans "Retail    " %}{{ session.price.incl_tax|currency:session.price.currency }}</h2>
         {# Display rent price including tax #}
-        <h2 class="price_color">{{ session.price.incl_tax_rent_cost|currency:session.price.currency }}</h2>
+        <h2 class="price_color">{% trans "Retail    " %}{{ session.price.incl_tax_rent_cost|currency:session.price.currency }}</h2>
     {% else %}
-        <h2 class="price_color">{{ session.price.excl_tax|currency:session.price.currency }}</h2>
+        <h2 class="price_color">{% trans "Rental    " %}{{ session.price.excl_tax|currency:session.price.currency }}</h2>
         {# Display rent price excluding tax #}
-        <h2 class="price_color">{{ session.price.excl_tax_rent_cost|currency:session.price.currency }}</h2>
+        <h2 class="price_color">{% trans "Rental    " %}{{ session.price.excl_tax_rent_cost|currency:session.price.currency }}</h2>
     {% endif %}
 {% else %}
     <h2 class="price_color">&nbsp;</h2>
