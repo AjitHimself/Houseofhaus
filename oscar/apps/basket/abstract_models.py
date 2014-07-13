@@ -832,7 +832,9 @@ class AbstractLine(models.Model):
             return
 
         # Compare current price to price when added to basket
-        current_price_incl_tax = self.purchase_info.price.incl_tax
+        # @ajit: changed incl_tax to incl_tax_rent_cost 
+        # for the crazy msg that was coming on basket page
+        current_price_incl_tax = self.purchase_info.price.incl_tax_rent_cost
         if current_price_incl_tax != self.price_incl_tax:
             product_prices = {
                 'product': self.product.get_title(),

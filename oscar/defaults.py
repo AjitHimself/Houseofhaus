@@ -52,7 +52,7 @@ OSCAR_PROMOTION_POSITIONS = (('page', 'Page'),
                              ('left', 'Left-hand sidebar'))
 
 # Reviews
-OSCAR_ALLOW_ANON_REVIEWS = True
+OSCAR_ALLOW_ANON_REVIEWS = False
 OSCAR_MODERATE_REVIEWS = False
 
 # Accounts
@@ -258,10 +258,10 @@ OSCAR_SEARCH_FACETS = {
             'queries': [
                 # This is a list of (name, query) tuples where the name will
                 # be displayed on the front-end.
-                (_('0 to 20'), '[0 TO 20]'),
-                (_('20 to 40'), '[20 TO 40]'),
-                (_('40 to 60'), '[40 TO 60]'),
-                (_('60+'), '[60 TO *]'),
+                (_('0 to 2000'), '[0 TO 2000]'),
+                (_('2000 to 4000'), '[2000 TO 4000]'),
+                (_('4000 to 6000'), '[4000 TO 6000]'),
+                (_('6000+'), '[6000 TO *]'),
             ]
         },
     }
