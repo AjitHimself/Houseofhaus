@@ -7,7 +7,6 @@ from oscar.core.loading import get_model, get_class
 Selector = get_class('partner.strategy', 'Selector')
 strategy = Selector().strategy()
 
-
 class ProductIndex(indexes.SearchIndex, indexes.Indexable):
     # Search text
     text = indexes.EdgeNgramField(
