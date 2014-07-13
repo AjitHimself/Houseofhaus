@@ -39,15 +39,9 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-<<<<<<< HEAD
-        'NAME': 'workoscar',
-        'USER': 'pavan',
-        'PASSWORD': 'vivenkyan',
-=======
         'NAME': 'HOHDB1',
         'USER': 'postgres',
         'PASSWORD': 'ajit',
->>>>>>> ae0af626c8fd70a1c7b9831db888c5253f72cb9b
         'HOST': '127.0.0.1',
         'PORT': '5432',
         #'ATOMIC_REQUESTS': True
