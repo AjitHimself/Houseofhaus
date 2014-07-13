@@ -288,7 +288,7 @@ class ProductForm(forms.ModelForm):
         model = Product
         exclude = ('slug', 'product_class',
                    'recommended_products', 'product_options',
-                   'attributes', 'categories')
+                   'attributes', 'categories','filter','filter_options',)
         widgets = {
             'parent': ProductSelect,
         }
