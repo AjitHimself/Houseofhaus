@@ -14,7 +14,7 @@
     {% endfor %}
 {% endif %}
 {% for field in form %}
-   	{% if not field.label == 'Quality' %}
+   	{% if not field.label == 'Quantity' %}
     	{% include 'partials/form_field.html' with field=field %}
     {% endif %}
 {% endfor %}
