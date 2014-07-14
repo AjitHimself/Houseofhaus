@@ -10,6 +10,13 @@ class ProductReviewForm(forms.ModelForm):
     name = forms.CharField(label=_('Name'), required=True)
     email = forms.EmailField(label=_('Email'), required=True)
 
+    image1 = forms.ImageField(help_text=_("Share with all how great u looked in this dress"),required=False)
+
+    image2 = forms.ImageField(required=False)
+
+    image3 = forms.ImageField(required=False)
+
+
     def __init__(self, product, user=None, *args, **kwargs):
         super(ProductReviewForm, self).__init__(*args, **kwargs)
         self.instance.product = product
@@ -20,7 +27,7 @@ class ProductReviewForm(forms.ModelForm):
 
     class Meta:
         model = ProductReview
-        fields = ('title', 'score', 'body', 'name', 'email')
+        fields = ('title', 'score', 'image1','image2','image3','body', 'name', 'email')
 
 
 class VoteForm(forms.ModelForm):

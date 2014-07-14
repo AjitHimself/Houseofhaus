@@ -1,6 +1,11 @@
 {% load reviews_tags %}
 {% load i18n %}
 
+{% load thumbnail %}
+{% load display_tags %}
+{% load staticfiles %}
+
+
 <article class="review">
     <header>
         <h3 class="star-rating {{ review.score|as_stars }}">
@@ -15,7 +20,57 @@
         </h3>
     </header>
 
+    {% if review.image1 %}
+    <img src="{{MEDIA_URL}}{{ review.image1 }}" alt="{{ review.title }}" height="15%" width="20%">
+    {% endif %}
+
+    {% if review.image2 %}
+    <img src="{{MEDIA_URL}}{{ review.image2 }}" alt="{{ review.title }}" height="15%" width="20%">
+    {% endif %}
+
+    {% if review.image3 %}
+    <img src="{{MEDIA_URL}}{{ review.image3 }}" alt="{{ review.title }}" height="15%" width="20%">
+    {% endif %}
+
+
+    <!-- <div class="image_container">
+                {% with image=review.image1 %}
+                    {% thumbnail image.original "x155" upscale=False as thumb %}
+                    <img src="{{MEDIA_URL}}{{ review.image1 }}" alt="{{ review.title }}" class="thumbnail">
+                    {% endthumbnail %}
+                {% endwith %}
+    </div> -->
+
+   <!--  {% if review.image1 %}
+    {% block review_image1 %}
+            <div class="image_container">
+                {% with image=review.image1 %}
+                    {% thumbnail image.original "x155" upscale=False as thumb %}
+                    <img src="{{ thumb.url }}" class="thumbnail">
+                    {% endthumbnail %}
+                {% endwith %}
+            </div>
+    {% endblock %}
+    {% endif %} -->
+
+    <br><br>
     <p>{{ review.body|striptags }}</p>
+    
+
+    
+
+    <!-- {% if review.image2 %}
+    {% block review_image2 %}
+            <div class="image_container">
+                {% with image=review.image2 %}
+                    {% thumbnail image.original "x155" upscale=False as thumb %}
+                    <img src="{{ thumb.url }}" class="thumbnail">
+                    {% endthumbnail %}
+                {% endwith %}
+            </div>
+    {% endblock %}
+    {% endif %} -->
+
 
     <p>
         <small>

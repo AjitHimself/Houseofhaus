@@ -18,6 +18,7 @@ from oscar.views.generic import ObjectLookupView
  ProductSearchForm,
  ProductClassForm,
  CategoryForm,
+ ProductFilterFormSet,
  StockRecordFormSet,
  StockAlertSearchForm,
  ProductCategoryFormSet,
@@ -29,11 +30,13 @@ from oscar.views.generic import ObjectLookupView
                    'ProductSearchForm',
                    'ProductClassForm',
                    'CategoryForm',
+                   'ProductFilterFormSet',
                    'StockRecordFormSet',
                    'StockAlertSearchForm',
                    'ProductCategoryFormSet',
                    'ProductImageFormSet',
                    'ProductRecommendationFormSet'))
+
 Product = get_model('catalogue', 'Product')
 Category = get_model('catalogue', 'Category')
 ProductImage = get_model('catalogue', 'ProductImage')
@@ -42,7 +45,7 @@ ProductClass = get_model('catalogue', 'ProductClass')
 StockRecord = get_model('partner', 'StockRecord')
 StockAlert = get_model('partner', 'StockAlert')
 Partner = get_model('partner', 'Partner')
-
+ProductFilter = get_model('catalogue', 'ProductFilter')
 
 def filter_products(queryset, user):
     """
@@ -74,6 +77,9 @@ class ProductListView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         ctx = super(ProductListView, self).get_context_data(**kwargs)
+
+#################################################################
+############## self.form=         
         ctx['form'] = self.form
         ctx['productclass_form'] = self.productclass_form_class()
         if 'recently_edited' in self.request.GET:
@@ -149,6 +155,7 @@ class ProductCreateRedirectView(generic.RedirectView):
     permanent = False
     productclass_form_class = ProductClassSelectForm
 
+###########################################################################
     def get_product_create_url(self, product_class):
         """ Allow site to provide custom URL """
         return reverse('dashboard:catalogue-product-create',
@@ -183,11 +190,14 @@ class ProductCreateUpdateView(generic.UpdateView):
     image_formset = ProductImageFormSet
     recommendations_formset = ProductRecommendationFormSet
     stockrecord_formset = StockRecordFormSet
+    flter_formset = ProductFilterFormSet
+    
 
     def __init__(self, *args, **kwargs):
         super(ProductCreateUpdateView, self).__init__(*args, **kwargs)
         self.formsets = {'category_formset': self.category_formset,
                          'image_formset': self.image_formset,
+                         'filter_formset': self.flter_formset,
                          'recommended_formset': self.recommendations_formset,
                          'stockrecord_formset': self.stockrecord_formset}
 
@@ -224,18 +234,45 @@ class ProductCreateUpdateView(generic.UpdateView):
         ctx = super(ProductCreateUpdateView, self).get_context_data(**kwargs)
         ctx['product_class'] = self.product_class
 
+        product_category = "None"
+        
+        try:     
+            if 'pk' in self.kwargs:   
+                product_category = ProductCategory.objects.get(product=self.kwargs['pk'])
+                print product_category.category_name
+                print product_category.category.name
+
+                category = product_category.category
+
+                filters = category.category_filters.select_related().all()
+        
+                for f in filters:
+                    print f.name, ':--'
+                    options = f.options.all()
+                    for o in options:
+                        print o.name
+            
+
+        except ProductCategory.DoesNotExist:
+            pass
+
+
         for ctx_name, formset_class in six.iteritems(self.formsets):
             if ctx_name not in ctx:
                 ctx[ctx_name] = formset_class(self.product_class,
                                               self.request.user,
                                               instance=self.object)
 
+##########################
+############This in itself checks if product exists or not.
         if self.object is None:
             ctx['title'] = _('Create new %s product') % self.product_class.name
         else:
             ctx['title'] = ctx['product'].get_title()
-            # @vivek: for passing context to add variant functionality
+            ####################################################################
             ctx['product_class_slug'] = self.product_class.slug
+            ctx['product_category'] = product_category
+
         return ctx
 
     def get_form_kwargs(self):
