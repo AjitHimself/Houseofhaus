@@ -30,6 +30,13 @@ class AbstractProductReview(models.Model):
         verbose_name=pgettext_lazy(u"Product review title", u"Title"),
         max_length=255, validators=[validators.non_whitespace])
 
+    image1 = models.ImageField(upload_to='Reviews/Images',verbose_name=_("Image"), help_text=_("Share with all how great u looked in this dress"), blank=True, null= True)
+
+    image2 = models.ImageField(upload_to='Reviews/Images',verbose_name=_("Image"),blank=True, null= True)
+
+    image3 = models.ImageField(upload_to='Reviews/Images',verbose_name=_("Image"),blank=True, null= True)
+
+
     body = models.TextField(_("Body"))
 
     # User information.

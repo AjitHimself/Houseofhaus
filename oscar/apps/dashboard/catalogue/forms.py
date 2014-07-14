@@ -22,7 +22,7 @@ ProductRecommendation = get_model('catalogue', 'ProductRecommendation')
 ProductSelect = get_class('dashboard.catalogue.widgets', 'ProductSelect')
 ProductSelectMultiple = get_class('dashboard.catalogue.widgets',
                                   'ProductSelectMultiple')
-
+ProductFilter = get_model('catalogue', 'ProductFilter')
 
 class BaseCategoryForm(MoveNodeForm):
 
@@ -375,6 +375,19 @@ class ProductForm(forms.ModelForm):
         return product
 
 
+class ProductFilterForm(forms.ModelForm):
+
+    class Meta:
+        model = ProductFilter
+
+BaseProductFilterFormSet = inlineformset_factory(Product, ProductFilter, form=ProductFilterForm,
+    extra=5, )
+
+class ProductFilterFormSet(BaseProductFilterFormSet):
+
+    def __init__(self, product_class, user, *args, **kwargs):
+        super(ProductFilterFormSet, self).__init__(*args, **kwargs)
+
 class StockAlertSearchForm(forms.Form):
     status = forms.CharField(label=_('Status'))
 
@@ -420,7 +433,7 @@ class ProductImageForm(forms.ModelForm):
 
     class Meta:
         model = ProductImage
-        exclude = ('display_order',)
+        # exclude = ('display_order',)
         # use ImageInput widget to create HTML displaying the
         # actual uploaded image and providing the upload dialog
         # when clicking on the actual image.
@@ -442,7 +455,7 @@ class ProductImageForm(forms.ModelForm):
 
 
 BaseProductImageFormSet = inlineformset_factory(
-    Product, ProductImage, form=ProductImageForm, extra=2)
+    Product, ProductImage, form=ProductImageForm, extra=6)
 
 
 class ProductImageFormSet(BaseProductImageFormSet):
