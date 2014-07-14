@@ -357,7 +357,7 @@ class BasketAddView(FormView):
 
 class BasketAddRentView(FormView):
     """
-    Handles the add-to-basket submissions, which are triggered from various
+    Handles the add-rent-to-basket submissions, which are triggered from various
     parts of the site. The add-to-basket form is loaded into templates using
     a templatetag from module basket_tags.py.
 
@@ -366,6 +366,8 @@ class BasketAddRentView(FormView):
     """
     form_class = AddToBasketForm
     product_model = get_model('catalogue', 'product')
+    # @ajit: fetched the rent model to make changes after addition of product
+    rent_model = get_model('rent','Rent')
     # @ajit: Signal is changed
     add_signal = signals.basket_rent_addition
     http_method_names = ['post']

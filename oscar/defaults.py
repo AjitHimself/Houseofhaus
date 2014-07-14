@@ -4,6 +4,8 @@ from django.core.urlresolvers import reverse_lazy
 OSCAR_SHOP_NAME = 'House'
 OSCAR_SHOP_TAGLINE = ''
 OSCAR_HOMEPAGE = reverse_lazy('promotions:home')
+# @ajit: Google analytics ID added for tracking
+GOOGLE_ANALYTICS_ID = 'UA-52704563-1'
 
 # Basket settings
 OSCAR_BASKET_COOKIE_LIFETIME = 7 * 24 * 60 * 60
