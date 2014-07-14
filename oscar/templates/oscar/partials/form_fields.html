@@ -13,7 +13,8 @@
         </div>
     {% endfor %}
 {% endif %}
-
 {% for field in form %}
-    {% include 'partials/form_field.html' with field=field %}
+   	{% if not field.label == 'Quality' %}
+    	{% include 'partials/form_field.html' with field=field %}
+    {% endif %}
 {% endfor %}

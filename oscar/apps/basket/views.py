@@ -405,6 +405,7 @@ class BasketAddRentView(FormView):
             form.product, True, form.cleaned_data['quantity'],
             form.cleaned_options())
 
+        self.rent_model.add()
 
 
         messages.success(self.request, self.get_success_message(form),
