@@ -8,6 +8,7 @@ from oscar.forms import widgets
 
 # @ajit: Import datetimepicker for Rent
 from datetimewidget.widgets import DateTimeWidget
+from bootstrap3_datetime.widgets import DateTimePicker
 
 Line = get_model('basket', 'line')
 Basket = get_model('basket', 'basket')
@@ -143,6 +144,9 @@ class RentForm(forms.Form):
 
 class AddToBasketForm(forms.Form):
     quantity = forms.IntegerField(initial=1, min_value=1, label=_('Quantity'))
+    start_date = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD",
+                                       "pickTime": False}),label =_('Date'))
+    period = forms.IntegerField(initial=4,min_value=4,label=_('Period'))
 
     def __init__(self, basket, product, *args, **kwargs):
         # Note, the product passed in here isn't necessarily the product being
@@ -151,12 +155,6 @@ class AddToBasketForm(forms.Form):
         # to indicate the ID of the variant being added to the basket.
         self.basket = basket
         self.base_product = product
-
-        # @ajit: Tried to add it here to for testing
-        widgets = {
-            #Use localization
-            'datetime': DateTimeWidget(attrs={'id':"datetimeid"}, usel10n = True)
-        }
 
         super(AddToBasketForm, self).__init__(*args, **kwargs)
 

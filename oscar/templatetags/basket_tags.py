@@ -8,6 +8,8 @@ AddToBasketForm = get_class('basket.forms', 'AddToBasketForm')
 RentForm = get_class('basket.forms', 'RentForm')
 SimpleAddToBasketForm = get_class('basket.forms', 'SimpleAddToBasketForm')
 Product = get_model('catalogue', 'product')
+# @ajit: fetched Rent model
+Rent = get_model('rent', 'Rent')
 
 register = template.Library()
 
