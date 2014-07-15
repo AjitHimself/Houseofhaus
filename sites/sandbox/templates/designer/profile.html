@@ -31,17 +31,18 @@
 
 {% block content %}
 
-
-<img src="{{ designer.profile_pic }}" alt="{{ designer.designer }}" >
+<img src="{{MEDIA_URL}}{{ designer.profile_pic }}" alt="{{ designer.designer }}" height="15%" width="20%">
+<br><br>
 <p>{{designer.name}}</p>
 <p>{{designer.date_joined}}</p>
 
-
+<b>MY LooKBooks:---</b>
+<br><br>
 {% for lookbook in designer.lookbooks.all %}
 <p><strong>{{lookbook.name}}</strong></p>
 
 {% for product in lookbook.products.all %}
-		{% block product_image %}
+        {% block product_image %}
             <div class="image_container">
                 {% with image=product.primary_image %}
                     {% thumbnail image.original "x155" upscale=False as thumb %}

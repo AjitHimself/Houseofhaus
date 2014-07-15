@@ -33,7 +33,7 @@
 {% block content %}
     <div class="row-fluid">
         <div class="span6 register_form">
-            <form action="." method="post" class="well">
+            <form action="." enctype="multipart/form-data" "method="post" class="well">
                 {% csrf_token %}
                 {% include "partials/form_fields.html"  %}
                 <button name="registration_submit" type="submit" value="Submit Request" class="btn btn-primary btn-large js-disable-on-click" data-loading-text="{%trans 'Submitting...' %}">{% trans 'Submit Request' %}</button>
