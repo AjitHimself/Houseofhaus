@@ -42,7 +42,7 @@
                         <link rel="stylesheet" type="text/less" href="{% static "oscar/less/styles.less" %}" />
                         <link rel="stylesheet" type="text/less" href="{% static "oscar/less/responsive.less" %}" />
                     {% else %}
-                        <link rel="stylesheet" type="text/css" href="{% static "oscar/css/styles.css" %}" />
+                        <link rel="stylesheet" type="text/css" href="{% static "oscar/css/styles1.css" %}" />
                         <link rel="stylesheet" type="text/css" href="{% static "oscar/css/responsive.css" %}" />
                     {% endif %}
                 {% endcompress %}
@@ -78,7 +78,7 @@
         {% block scripts %}
             {% compress js %}
             <!-- Twitter Bootstrap -->
-            <script type="text/javascript" src="{% static "oscar/js/bootstrap/bootstrap.min.js" %}"></script>
+            <script type="text/javascript" src="{% static "oscar/js/bootstrap/bootstrap_1.min.js" %}"></script>
             <!-- Oscar -->
             <script src="{% static "oscar/js/oscar/ui.js" %}" type="text/javascript" charset="utf-8"></script>
             {% endcompress %}
