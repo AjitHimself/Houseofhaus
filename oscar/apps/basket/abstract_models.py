@@ -12,6 +12,7 @@ from oscar.apps.basket.managers import OpenBasketManager, SavedBasketManager
 from oscar.apps.offer import results
 from oscar.core.compat import AUTH_USER_MODEL
 from oscar.templatetags.currency_filters import currency
+from datetime import timedelta
 
 
 class AbstractBasket(models.Model):
@@ -26,7 +27,7 @@ class AbstractBasket(models.Model):
 
     # Basket statuses
     # - Frozen is for when a basket is in the process of being submitted
-    #   and we need to prevent any changes to it.
+    # and we need to prevent any changes to it.
     OPEN, MERGED, SAVED, FROZEN, SUBMITTED = (
         "Open", "Merged", "Saved", "Frozen", "Submitted")
     STATUS_CHOICES = (
@@ -76,9 +77,9 @@ class AbstractBasket(models.Model):
     def __unicode__(self):
         return _(
             u"%(status)s basket (owner: %(owner)s, lines: %(num_lines)d)") \
-            % {'status': self.status,
-               'owner': self.owner,
-               'num_lines': self.num_lines}
+               % {'status': self.status,
+                  'owner': self.owner,
+                  'num_lines': self.num_lines}
 
     # ========
     # Strategy
@@ -136,7 +137,7 @@ class AbstractBasket(models.Model):
                 return False, _(
                     "Due to technical limitations we are not able "
                     "to ship more than %(threshold)d items in one order.") \
-                    % {'threshold': basket_threshold}
+                       % {'threshold': basket_threshold}
         return True, None
 
     # ============
@@ -174,14 +175,14 @@ class AbstractBasket(models.Model):
         stock_info = self.strategy.fetch_for_product(product)
         if price_currency and stock_info.price.currency != price_currency:
             raise ValueError((
-                "Basket lines must all have the same currency. Proposed "
-                "line has currency %s, while basket has currency %s")
-                % (stock_info.price.currency, price_currency))
+                                 "Basket lines must all have the same currency. Proposed "
+                                 "line has currency %s, while basket has currency %s")
+                             % (stock_info.price.currency, price_currency))
 
         if stock_info.stockrecord is None:
             raise ValueError((
-                "Basket lines must all have stock records. Strategy hasn't "
-                "found any stock record for product %s") % product)
+                                 "Basket lines must all have stock records. Strategy hasn't "
+                                 "found any stock record for product %s") % product)
 
         # Line reference is used to distinguish between variations of the same
         # product (eg T-shirts with different personalisations)
@@ -215,7 +216,7 @@ class AbstractBasket(models.Model):
                 defaults['price_incl_tax'] = stock_info.price.incl_tax_rent_cost
             else:
                 defaults['price_incl_tax'] = stock_info.price.incl_tax
-        print 
+        print
         line, created = self.lines.get_or_create(
             line_reference=line_ref,
             product=product,
@@ -229,6 +230,7 @@ class AbstractBasket(models.Model):
             line.quantity += quantity
             line.save()
         self.reset_offer_applications()
+
     add_product.alters_data = True
     add = add_product
 
@@ -272,6 +274,7 @@ class AbstractBasket(models.Model):
             line.delete()
         finally:
             self._lines = None
+
     merge_line.alters_data = True
 
     def merge(self, basket, add_quantities=True):
@@ -293,6 +296,7 @@ class AbstractBasket(models.Model):
         for voucher in basket.vouchers.all():
             basket.vouchers.remove(voucher)
             self.vouchers.add(voucher)
+
     merge.alters_data = True
 
     def freeze(self):
@@ -301,6 +305,7 @@ class AbstractBasket(models.Model):
         """
         self.status = self.FROZEN
         self.save()
+
     freeze.alters_data = True
 
     def thaw(self):
@@ -309,6 +314,7 @@ class AbstractBasket(models.Model):
         """
         self.status = self.OPEN
         self.save()
+
     thaw.alters_data = True
 
     def submit(self):
@@ -318,6 +324,7 @@ class AbstractBasket(models.Model):
         self.status = self.SUBMITTED
         self.date_submitted = now()
         self.save()
+
     submit.alters_data = True
 
     # Kept for backwards compatibility
@@ -575,7 +582,7 @@ class AbstractLine(models.Model):
         verbose_name=_("Product"))
 
     # @ajit: Line is a product order and here rent flag is added to it
-    is_rent = models.BooleanField(default = False)
+    is_rent = models.BooleanField(default=False)
 
     # @ajit: Rent start date and Period should be stored in basket line
     rent_start_date = models.DateTimeField(_('Rent start date'), null=True)
@@ -714,6 +721,21 @@ class AbstractLine(models.Model):
             return 0
         return self.unit_price_excl_tax / self.unit_price_incl_tax
 
+    # =======
+    # To fetch dates in only date format
+    # eg. In basket_content.html
+    # ========
+
+    @property
+    def get_rent_start_date(self):
+        return self.rent_start_date.date()
+
+    @property
+    def get_rent_end_date(self):
+        d = timedelta(days=self.period)
+        rent_end_date = self.get_rent_start_date + d
+        return rent_end_date
+
     # ==========
     # Properties
     # ==========
@@ -798,7 +820,7 @@ class AbstractLine(models.Model):
             # discount applies to tax-exclusive prices.  We do this by
             # assuming a linear tax and scaling down the original discount.
             return self.line_price_excl_tax \
-                - self._tax_ratio * self._discount_incl_tax
+                   - self._tax_ratio * self._discount_incl_tax
         return self.line_price_excl_tax
 
     @property

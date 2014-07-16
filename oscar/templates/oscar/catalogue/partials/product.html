@@ -37,11 +37,11 @@
                 {% include "catalogue/partials/stock_record.html" %}
                 {% if not product.is_group %}
                     {% comment %}
-                    # Purchase is out of picture here, it'll be there in SALE
                     {% include "catalogue/partials/add_to_basket_form_compact.html" %}
-                    {% endcomment %}
-                    {# Added rent partial form on products page #}
                     {% include "catalogue/partials/add_rent_to_basket_form_compact.html" %}
+                    ************** Whatever added below is the rent button with link to product page
+                    {% endcomment %}
+                    <a href="{{ product.get_absolute_url }}"><button type="submit" class="btn btn-primary btn-block">{% trans "Rent" %}</button></a>
                 {% endif %}
             </div>
         {% endblock %}

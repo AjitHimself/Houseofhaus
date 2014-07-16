@@ -509,6 +509,10 @@ class PaymentDetailsView(OrderPlacementMixin, generic.TemplateView):
     def submit(self, user, basket, shipping_address, shipping_method,  # noqa (too complex (10))
                shipping_charge, order_total, payment_kwargs=None,
                order_kwargs=None):
+
+        # @ajit: Testing
+        print "IM IN CHECKOUT/VIEWS.PY"
+
         """
         Submit a basket for order placement.
 

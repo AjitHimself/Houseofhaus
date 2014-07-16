@@ -5,8 +5,6 @@ from django.utils.translation import ugettext_lazy as _
 
 from oscar.core.loading import get_model
 from oscar.forms import widgets
-
-# @ajit: Import datetimepicker for Rent
 from bootstrap3_datetime.widgets import DateTimePicker
 from datetime import date
 
@@ -133,16 +131,14 @@ class BasketVoucherForm(forms.Form):
     def clean_code(self):
         return self.cleaned_data['code'].strip().upper()
 
-# @ajit: Created new form to implement datepicker
-class RentForm(forms.Form):
-    class Meta:
-        model = Rent
-
 class AddToBasketForm(forms.Form):
     quantity = forms.IntegerField(initial=1, min_value=1, widget=forms.HiddenInput, label=_('Quantity'))
     rent_start_date = forms.DateField(initial=date.today(), widget=DateTimePicker(options={"format": "YYYY-MM-DD",
                                     "pickTime": False}), label=_('Date'))
-    period = forms.IntegerField(initial=4, min_value=4, label=_('Period'))
+    CHOICES = (('4', '4'), ('8', '8'))
+    # period = forms.IntegerField(initial=4, min_value=4, choices=CHOICES, label=_('Period'))
+    # @ajit: Made Period as a Choice Field
+    period = forms.ChoiceField(choices=CHOICES, label=_('Period'))
 
     def __init__(self, basket, product, *args, **kwargs):
         # Note, the product passed in here isn't necessarily the product being
@@ -291,4 +287,4 @@ class SimpleAddToBasketForm(AddToBasketForm):
     quantity = forms.IntegerField(
         initial=1, min_value=1, widget=forms.HiddenInput, label=_('Quantity'))
     rent_start_date = forms.DateField(initial="2014-03-14", widget=forms.HiddenInput, label=_('Date'))
-    period = forms.IntegerField(initial=4, min_value=4, widget=forms.HiddenInput, label=_('Period'))
+    period = forms.IntegerField(initial=4, widget=forms.HiddenInput, label=_('Period'))

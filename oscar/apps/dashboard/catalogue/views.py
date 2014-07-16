@@ -239,7 +239,6 @@ class ProductCreateUpdateView(generic.UpdateView):
         try:     
             if 'pk' in self.kwargs:   
                 product_category = ProductCategory.objects.get(product=self.kwargs['pk'])
-                print product_category.category_name
                 print product_category.category.name
 
                 category = product_category.category

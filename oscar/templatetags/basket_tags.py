@@ -4,12 +4,9 @@ from oscar.core.loading import get_model
 from oscar.core.loading import get_class
 
 AddToBasketForm = get_class('basket.forms', 'AddToBasketForm')
-# @ajit: Import Rent form
-RentForm = get_class('basket.forms', 'RentForm')
 SimpleAddToBasketForm = get_class('basket.forms', 'SimpleAddToBasketForm')
 Product = get_model('catalogue', 'product')
-# @ajit: fetched Rent model
-Rent = get_model('rent', 'Rent')
+
 
 register = template.Library()
 
@@ -38,15 +35,6 @@ def do_basket_form(parse, token):
             "'single', 'multiple'" % tokens[0])
     return BasketFormNode(request_var, product_var, form_var, quantity_type)
 
-# @ajit: Registerd template tag for rent
-@register.tag(name="rent_form")
-def do_rent_form(parse, token):
-    """
-    Template tag for rendering Rent field especially
-    date time picker in template
-    """
-    return RentFormNode()
-
 class BasketFormNode(template.Node):
     def __init__(self, request_var, product_var, form_var, quantity_type):
         self.request_var = template.Variable(request_var)
@@ -72,10 +60,4 @@ class BasketFormNode(template.Node):
             request.basket, product=product,
             initial=initial)
         context[self.form_var] = form
-        return ''
-
-# @ajit: created node 
-class RentFormNode(template.Node):
-    def render(self, context):
-        context['form'] = RentForm()
         return ''
