@@ -18,7 +18,7 @@
 
     <form id="add_to_basket_form" action="{% url 'basket:add-rent' pk=product.pk  %}" method="post" class="form-stacked add-to-basket">
         {% csrf_token %}
-        {% include "partials/form_fields.html" with form=basket_form %} 
+        {% include "partials/form_fields.html" with form=basket_form %}
         <button type="submit" class="btn btn-large btn-primary btn-block" value="{% trans "Add to basket" %}">{% trans "Rent" %}</button>
     </form>
     {% include "catalogue/partials/add_to_wishlist.html" %}

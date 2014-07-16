@@ -376,6 +376,7 @@ INSTALLED_APPS = [
     'apps.dashboard.designer',
     'accounts',
     'request',
+    'bootstrap3_datetime',
     #'filters',
 ]
 from oscar import get_core_apps

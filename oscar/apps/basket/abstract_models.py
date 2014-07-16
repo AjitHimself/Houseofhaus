@@ -153,7 +153,7 @@ class AbstractBasket(models.Model):
         self._lines = None
 
     # @ajit: added is_rent flag at the time of product addidtion to the basket    
-    def add_product(self, product, is_rent, quantity=1, options=None):
+    def add_product(self, product, is_rent, rent_start_date, period, quantity=1, options=None):
         """
         Add a product to the basket
 
@@ -196,14 +196,18 @@ class AbstractBasket(models.Model):
                 'quantity': quantity,
                 'price_excl_tax': stock_info.price.excl_tax_rent_cost,
                 'price_currency': stock_info.price.currency,
-                'is_rent':True
+                'is_rent': True,
+                'rent_start_date': rent_start_date,
+                'period': period
             }
         else:
             defaults = {
                 'quantity': quantity,
                 'price_excl_tax': stock_info.price.excl_tax,
                 'price_currency': stock_info.price.currency,
-                'is_rent':False
+                'is_rent': False,
+                'rent_start_date': None,
+                'period': None
             }
 
         if stock_info.price.is_tax_known:
@@ -572,6 +576,12 @@ class AbstractLine(models.Model):
 
     # @ajit: Line is a product order and here rent flag is added to it
     is_rent = models.BooleanField(default = False)
+
+    # @ajit: Rent start date and Period should be stored in basket line
+    rent_start_date = models.DateTimeField(_('Rent start date'), null=True)
+
+    CHOICES = (('4', '4'), ('8', '8'))
+    period = models.IntegerField(_('Rent Period'), max_length=30, choices=CHOICES, null=True)
 
     # We store the stockrecord that should be used to fulfil this line.
     stockrecord = models.ForeignKey(

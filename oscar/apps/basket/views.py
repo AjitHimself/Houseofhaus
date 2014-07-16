@@ -16,7 +16,7 @@ from oscar.core import ajax
 from oscar.apps.basket import signals
 from oscar.core.loading import get_class, get_classes, get_model
 # @ajit: Importing Rent model to save in defs
-from apps.rent.models import Rent
+# from apps.rent.models import Rent
 
 Applicator = get_class('offer.utils', 'Applicator')
 (BasketLineFormSet, BasketLineForm, AddToBasketForm, BasketVoucherForm,
@@ -367,7 +367,7 @@ class BasketAddRentView(FormView):
     form_class = AddToBasketForm
     product_model = get_model('catalogue', 'product')
     # @ajit: fetched the rent model to make changes after addition of product
-    rent_model = get_model('rent','Rent')
+    #rent_model = get_model('rent', 'Rent')
     # @ajit: Signal is changed
     add_signal = signals.basket_rent_addition
     http_method_names = ['post']
@@ -381,8 +381,7 @@ class BasketAddRentView(FormView):
         kwargs = super(BasketAddRentView, self).get_form_kwargs()
         kwargs['basket'] = self.request.basket
         kwargs['product'] = self.product
-        # @ajit: is_rent flag is passed to __init__() of AddToBasketForm
-        #kwargs['is_rent'] = True
+
         return kwargs
 
     def form_invalid(self, form):
@@ -402,11 +401,8 @@ class BasketAddRentView(FormView):
         # @issue: Here I have to add the functionality to add the product to Rent model too
         # at the same time
         self.request.basket.add_product(
-            form.product, True, form.cleaned_data['quantity'],
+            form.product, True, form.cleaned_data.get('rent_start_date'), form.cleaned_data.get('period'), form.cleaned_data['quantity'],
             form.cleaned_options())
-
-        self.rent_model.add()
-
 
         messages.success(self.request, self.get_success_message(form),
                          extra_tags='safe noicon')

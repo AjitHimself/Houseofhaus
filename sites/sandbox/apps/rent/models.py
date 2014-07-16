@@ -9,26 +9,11 @@ from oscar.core.compat import AUTH_USER_MODEL
 
 
 class Rent(models.Model):
-    # name = models.CharField(_('First name'), max_length=255, blank=True, default= "no")
     customer = models.ForeignKey(AUTH_USER_MODEL, verbose_name=_("Customer name"), null=True, blank=True, unique=True)
 
     product = models.ForeignKey(Product, verbose_name=_("Product"), null=True, blank=True)
 
-    RENT_PERIOD_CHOICES = (
-        ('4', '4' ),
-        ('5', '5'),
-        ('6', '6'),
-        ('7', '7'),
-        ('8', '8'),
-        ('9', '9'),
-        ('10', '10'),
-        ('11', '11'),
-        ('12', '12'),
-        ('13', '13'),
-        ('14', '14'),
-    )
-
-    CHOICES = [(i, i) for i in range(4, 14)]
+    CHOICES = (('4', '4'), ('8', '8'))
     period = models.IntegerField(_('Rent Period'), max_length=30, choices=CHOICES, null=True)
 
     start_date = models.DateTimeField(_('Rent start date'), auto_now_add=True)

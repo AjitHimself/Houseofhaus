@@ -8,7 +8,7 @@
     {% basket_form request product as basket_form single %}
     <form action="{% url 'basket:add-rent' pk=product.pk %}" method="post">
         {% csrf_token %}
-        {#{{ basket_form.as_p }}#}
+        {{ basket_form.as_p }}
         <button type="submit" class="btn btn-primary btn-block">{% trans "Rent" %}</button>
     </form>
 {% else %}

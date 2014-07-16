@@ -7,8 +7,8 @@ from oscar.core.loading import get_model
 from oscar.forms import widgets
 
 # @ajit: Import datetimepicker for Rent
-from datetimewidget.widgets import DateTimeWidget
 from bootstrap3_datetime.widgets import DateTimePicker
+from datetime import date
 
 Line = get_model('basket', 'line')
 Basket = get_model('basket', 'basket')
@@ -137,22 +137,19 @@ class BasketVoucherForm(forms.Form):
 class RentForm(forms.Form):
     class Meta:
         model = Rent
-        widgets = {
-            #Use localization
-            'datetime': DateTimeWidget(attrs={'id':"start_date"}, usel10n = True)
-        }
 
 class AddToBasketForm(forms.Form):
-    quantity = forms.IntegerField(initial=1, min_value=1, label=_('Quantity'))
-    start_date = forms.DateField(widget=DateTimePicker(options={"format": "YYYY-MM-DD",
-                                       "pickTime": False}),label =_('Date'))
-    period = forms.IntegerField(initial=4,min_value=4,label=_('Period'))
+    quantity = forms.IntegerField(initial=1, min_value=1, widget=forms.HiddenInput, label=_('Quantity'))
+    rent_start_date = forms.DateField(initial=date.today(), widget=DateTimePicker(options={"format": "YYYY-MM-DD",
+                                    "pickTime": False}), label=_('Date'))
+    period = forms.IntegerField(initial=4, min_value=4, label=_('Period'))
 
     def __init__(self, basket, product, *args, **kwargs):
         # Note, the product passed in here isn't necessarily the product being
         # added to the basket. For group products, it is the *parent* product
         # that gets passed to the form. An optional product_id param is passed
         # to indicate the ID of the variant being added to the basket.
+
         self.basket = basket
         self.base_product = product
 
@@ -286,7 +283,6 @@ class AddToBasketForm(forms.Form):
                     'value': self.cleaned_data[option.code]})
         return options
 
-
 class SimpleAddToBasketForm(AddToBasketForm):
     """
     Simplified version of the add to basket form where the quantity is
@@ -294,3 +290,5 @@ class SimpleAddToBasketForm(AddToBasketForm):
     """
     quantity = forms.IntegerField(
         initial=1, min_value=1, widget=forms.HiddenInput, label=_('Quantity'))
+    rent_start_date = forms.DateField(initial="2014-03-14", widget=forms.HiddenInput, label=_('Date'))
+    period = forms.IntegerField(initial=4, min_value=4, widget=forms.HiddenInput, label=_('Period'))
