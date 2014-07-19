@@ -7,8 +7,8 @@ from apps.rent.models import Rent
 
 
 class RentAdmin(admin.ModelAdmin):
-	list_display = ('product','customer','period', 'start_date', 'end_date')
-	list_display_links = ('product',) 
+	list_display = ('stock_record','customer','period', 'start_date', 'end_date')
+	list_display_links = ('stock_record',) 
 	list_filter = ('customer',)
 	readonly_fields=('start_date','end_date')
 

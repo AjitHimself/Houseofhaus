@@ -6,12 +6,13 @@ from django.utils.translation import ugettext_lazy as _
 from oscar.core.loading import get_model
 from oscar.forms import widgets
 from bootstrap3_datetime.widgets import DateTimePicker
-from datetime import date
+from datetime import date, timedelta
 
 Line = get_model('basket', 'line')
 Basket = get_model('basket', 'basket')
 Product = get_model('catalogue', 'product')
-Rent = get_model('rent','Rent')
+Rent = get_model('rent', 'Rent')
+
 
 class BasketLineForm(forms.ModelForm):
     save_for_later = forms.BooleanField(
@@ -47,7 +48,6 @@ class BasketLineForm(forms.ModelForm):
 
 
 class BaseBasketLineFormSet(BaseModelFormSet):
-
     def __init__(self, strategy, *args, **kwargs):
         self.strategy = strategy
         super(BaseBasketLineFormSet, self).__init__(*args, **kwargs)
@@ -106,7 +106,6 @@ class SavedLineForm(forms.ModelForm):
 
 
 class BaseSavedLineFormSet(BaseModelFormSet):
-
     def __init__(self, strategy, basket, *args, **kwargs):
         self.strategy = strategy
         self.basket = basket
@@ -131,10 +130,13 @@ class BasketVoucherForm(forms.Form):
     def clean_code(self):
         return self.cleaned_data['code'].strip().upper()
 
+
 class AddToBasketForm(forms.Form):
     quantity = forms.IntegerField(initial=1, min_value=1, widget=forms.HiddenInput, label=_('Quantity'))
     rent_start_date = forms.DateField(initial=date.today(), widget=DateTimePicker(options={"format": "YYYY-MM-DD",
-                                    "pickTime": False}), label=_('Date'))
+                                                                                           "pickTime": True}),
+                                      error_messages={'required':'Please enter the arrival date for this product'},
+                                      label=_('Date'))
     CHOICES = (('4', '4'), ('8', '8'))
     # period = forms.IntegerField(initial=4, min_value=4, choices=CHOICES, label=_('Period'))
     # @ajit: Made Period as a Choice Field
@@ -249,7 +251,7 @@ class AddToBasketForm(forms.Form):
 
         # Check currencies are sensible
         if (self.basket.currency and
-                info.price.currency != self.basket.currency):
+                    info.price.currency != self.basket.currency):
             raise forms.ValidationError(
                 _("This product cannot be added to the basket as its currency "
                   "isn't the same as other products in your basket"))
@@ -278,6 +280,7 @@ class AddToBasketForm(forms.Form):
                     'option': option,
                     'value': self.cleaned_data[option.code]})
         return options
+
 
 class SimpleAddToBasketForm(AddToBasketForm):
     """

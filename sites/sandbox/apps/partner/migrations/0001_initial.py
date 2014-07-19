@@ -25,6 +25,7 @@ class Migration(SchemaMigration):
             ('date_updated', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, db_index=True, blank=True)),
             ('rent_cost', self.gf('django.db.models.fields.DecimalField')(null=True, max_digits=12, decimal_places=2, blank=True)),
             ('rent_deposit', self.gf('django.db.models.fields.DecimalField')(null=True, max_digits=12, decimal_places=2, blank=True)),
+            ('no_of_rent', self.gf('django.db.models.fields.IntegerField')(default=0, null=True)),
             ('deposit_value', self.gf('django.db.models.fields.DecimalField')(null=True, max_digits=12, decimal_places=2, blank=True)),
         ))
         db.send_create_signal(u'partner', ['StockRecord'])
@@ -177,6 +178,18 @@ class Migration(SchemaMigration):
             'path': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '255'})
         },
+        u'catalogue.filteroption': {
+            'Meta': {'object_name': 'FilterOption'},
+            'filters': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'options'", 'to': u"orm['catalogue.FilterType']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'null': 'True'})
+        },
+        u'catalogue.filtertype': {
+            'Meta': {'unique_together': "(('category', 'name'),)", 'object_name': 'FilterType'},
+            'category': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'category_filters'", 'to': u"orm['catalogue.Category']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'null': 'True'})
+        },
         u'catalogue.option': {
             'Meta': {'object_name': 'Option'},
             'code': ('oscar.models.fields.autoslugfield.AutoSlugField', [], {'allow_duplicates': 'False', 'max_length': '128', 'separator': "u'-'", 'blank': 'True', 'unique': 'True', 'populate_from': "'name'", 'overwrite': 'False'}),
@@ -191,20 +204,19 @@ class Migration(SchemaMigration):
             'date_created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'date_updated': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'db_index': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'designer': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['designer.Designer']", 'null': 'True', 'blank': 'True'}),
+            'designer': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'products'", 'null': 'True', 'to': u"orm['designer.Designer']"}),
+            'filter': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['catalogue.FilterType']", 'symmetrical': 'False', 'through': u"orm['catalogue.ProductFilter']", 'blank': 'True'}),
+            'filter_options': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'filter_options'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['catalogue.FilterOption']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_discountable': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'on_rent': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'parent': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'variants'", 'null': 'True', 'to': u"orm['catalogue.Product']"}),
             'product_class': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'products'", 'null': 'True', 'on_delete': 'models.PROTECT', 'to': u"orm['catalogue.ProductClass']"}),
             'product_options': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['catalogue.Option']", 'symmetrical': 'False', 'blank': 'True'}),
             'rating': ('django.db.models.fields.FloatField', [], {'null': 'True'}),
             'recommended_products': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['catalogue.Product']", 'symmetrical': 'False', 'through': u"orm['catalogue.ProductRecommendation']", 'blank': 'True'}),
-            'rent_count': ('django.db.models.fields.IntegerField', [], {'default': '0', 'null': 'True'}),
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '255'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            'upc': ('oscar.models.fields.NullCharField', [], {'max_length': '64', 'unique': 'True', 'null': 'True', 'blank': 'True'}),
-            'video': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'})
+            'upc': ('oscar.models.fields.NullCharField', [], {'max_length': '64', 'unique': 'True', 'null': 'True', 'blank': 'True'})
         },
         u'catalogue.productattribute': {
             'Meta': {'ordering': "['code']", 'object_name': 'ProductAttribute'},
@@ -248,6 +260,13 @@ class Migration(SchemaMigration):
             'slug': ('oscar.models.fields.autoslugfield.AutoSlugField', [], {'allow_duplicates': 'False', 'max_length': '128', 'separator': "u'-'", 'blank': 'True', 'unique': 'True', 'populate_from': "'name'", 'overwrite': 'False'}),
             'track_stock': ('django.db.models.fields.BooleanField', [], {'default': 'True'})
         },
+        u'catalogue.productfilter': {
+            'Meta': {'unique_together': "(('filters', 'product'),)", 'object_name': 'ProductFilter'},
+            'filters': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['catalogue.FilterType']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'option': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['catalogue.FilterOption']"}),
+            'product': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'product_filters'", 'to': u"orm['catalogue.Product']"})
+        },
         u'catalogue.productrecommendation': {
             'Meta': {'ordering': "['primary', '-ranking']", 'unique_together': "(('primary', 'recommendation'),)", 'object_name': 'ProductRecommendation'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -269,7 +288,8 @@ class Migration(SchemaMigration):
             'gender': ('django.db.models.fields.CharField', [], {'max_length': '30', 'null': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True'}),
-            'profile_pic': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'})
+            'profile_pic': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '255'})
         },
         u'partner.partner': {
             'Meta': {'object_name': 'Partner'},
@@ -313,6 +333,7 @@ class Migration(SchemaMigration):
             'deposit_value': ('django.db.models.fields.DecimalField', [], {'null': 'True', 'max_digits': '12', 'decimal_places': '2', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'low_stock_threshold': ('django.db.models.fields.PositiveIntegerField', [], {'null': 'True', 'blank': 'True'}),
+            'no_of_rent': ('django.db.models.fields.IntegerField', [], {'default': '0', 'null': 'True'}),
             'num_allocated': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'num_in_stock': ('django.db.models.fields.PositiveIntegerField', [], {'null': 'True', 'blank': 'True'}),
             'partner': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'stockrecords'", 'to': u"orm['partner.Partner']"}),

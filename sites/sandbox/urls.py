@@ -35,7 +35,8 @@ urlpatterns += i18n_patterns('',
     url(r'request/', include('apps.request.urls', namespace='request', app_name='request')),
     # @vivek: added new url for designer access on first page
     url(r'designer/', include('apps.designer.urls', namespace='designer', app_name='designer')),
-
+    # @ajit: Payment fateway URL
+    url(r'payzippy/', include('apps.payzippy.urls', namespace='payzippy', app_name='payzippy')),
 
     #url(r'designer/', include('apps.designer.urls', namespace='dashboard', app_name='designer'), ),  ##ADDED BY ME
     # Oscar's normal URLs

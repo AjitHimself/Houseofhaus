@@ -582,7 +582,7 @@ class AbstractLine(models.Model):
         verbose_name=_("Product"))
 
     # @ajit: Line is a product order and here rent flag is added to it
-    is_rent = models.BooleanField(default=False)
+    is_rent = models.BooleanField(_("Rent"), default=False)
 
     # @ajit: Rent start date and Period should be stored in basket line
     rent_start_date = models.DateTimeField(_('Rent start date'), null=True)

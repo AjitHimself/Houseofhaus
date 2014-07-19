@@ -1,6 +1,7 @@
 from itertools import chain
 from decimal import Decimal as D
 import hashlib
+from datetime import timedelta
 
 from django.conf import settings
 from django.db import models
@@ -420,6 +421,14 @@ class AbstractLine(models.Model):
 
     quantity = models.PositiveIntegerField(_("Quantity"), default=1)
 
+    # @ajit: Extra fields added
+    is_rent = models.BooleanField(_("Rent"), default=False)
+
+    rent_start_date = models.DateTimeField(_('Rent start date'), null=True)
+
+    CHOICES = (('4', '4'), ('8', '8'))
+    period = models.IntegerField(_('Rent Period'), max_length=30, choices=CHOICES, null=True)
+
     # REPORTING INFORMATION
     # ---------------------
 
@@ -511,6 +520,21 @@ class AbstractLine(models.Model):
         self.status = new_status
         self.save()
     set_status.alters_data = True
+
+    # =======
+    # To fetch dates in only date format
+    # eg. In basket_content.html
+    # ========
+
+    @property
+    def get_rent_start_date(self):
+        return self.rent_start_date.date()
+
+    @property
+    def get_rent_end_date(self):
+        d = timedelta(days=self.period)
+        rent_end_date = self.get_rent_start_date + d
+        return rent_end_date
 
     @property
     def category(self):

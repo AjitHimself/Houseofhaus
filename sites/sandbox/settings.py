@@ -376,6 +376,7 @@ INSTALLED_APPS = [
     'apps.dashboard.designer',
     'accounts',
     'request',
+    'payzippy',
     'bootstrap3_datetime',
     #'filters',
 ]
