@@ -146,6 +146,10 @@ class OrderCreator(object):
             'partner_name': partner.name,
             'partner_sku': stockrecord.partner_sku,
             'stockrecord': stockrecord,
+            # Rent details
+            'is_rent': basket_line.is_rent,
+            'rent_start_date': basket_line.rent_start_date,
+            'period': basket_line.period,
             # Product details
             'product': product,
             'title': product.get_title(),

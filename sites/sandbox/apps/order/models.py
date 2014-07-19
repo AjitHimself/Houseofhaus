@@ -4,9 +4,6 @@ from django.db import models
 
 from oscar.apps.order.abstract_models import AbstractOrder
 
-class Order(AbstractOrder):
-	on_rent=models.BooleanField(_("Is product on rent?"),default=False)
-
 from oscar.apps.order.models import *  # noqa
 
 
