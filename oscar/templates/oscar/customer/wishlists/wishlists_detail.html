@@ -31,7 +31,7 @@
                 <tbody>
                     <tr>
                         <th colspan="2">{% trans 'Product' %}</th>
-                        <th>{% trans 'Quantity' %}</th>
+                        <!--<th>{% trans 'Quantity' %}</th>-->
                         <th>{% trans 'Action' %}</th>
                     </tr>
 
@@ -56,6 +56,7 @@
                                         <em>{{ line.get_title }} ({% trans 'Not available anymore' %})</em>
                                     {% endif %}
                                 </td>
+                            {% comment %}
                                 <td>
                                     {% for field in subform %}
                                         {{ field }}
@@ -66,6 +67,7 @@
                                         {% endfor %}
                                     {% endfor %}
                                 </td>
+                            {% endcomment %}
                                 <td>
                                     <div class="btn-group">
                                         {% if product %}
@@ -96,6 +98,7 @@
                             </tr>
                         {% endwith %}
                     {% endfor %}
+                {% comment %}
                     <tr>
                         <td colspan="2"></td>
                         <td>
@@ -103,6 +106,7 @@
                         </td>
                         <td></td>
                     </tr>
+                {% endcomment %}
                 </tbody>
             </table>
         </form>
