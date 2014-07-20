@@ -470,9 +470,10 @@ OSCAR_ALLOW_ANON_CHECKOUT = True
 # in the page title.
 DISPLAY_VERSION = False
 
-
+# ================
 # Order processing
 # ================
+
 
 # Sample order/line status settings. This is quite simplistic. It's like you'll
 # want to override the set_status method on the order object to do more
@@ -496,24 +497,8 @@ OSCAR_ORDER_STATUS_CASCADE = {
     'Complete': 'Shipped',
 }
 
-"""
-def my_access_fns():
-
-    if url_name is None:  # it's a heading
-        return True
-
-    #if ':' in url_name:
-        #view_name = url_name.split(':')[1]
-    #else:
-     #   view_name = url_name
-    #permissions = app_instance.get_permissions(view_name)
-    #return check_permissions(user, permissions)
-
-#OSCAR_DASHBOARD_DEFAULT_ACCESS_FUNCTION += ['my_access_fns',]
-"""
 
 #from designer import views
-
 OSCAR_DASHBOARD_NAVIGATION += [
   {
         'label': _('Designer'),
@@ -526,19 +511,6 @@ OSCAR_DASHBOARD_NAVIGATION += [
             },
          ]
       },
-
-    {
-        'label': _('Designer'),
-        'icon': 'icon-bug',                   # for fa-bug we write 'icon-bug'
-        'children': [
-            {
-                'label': _('Cookbook'),
-                'url_name': 'dashboard:catalogue-lookbook-list',
-                #url(r'designer/LookBooks/',views.LookbookListView.as_view(),)
-            },
-         ]
-      },
-
 ]
 
 # LESS/CSS/statics

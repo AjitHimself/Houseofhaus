@@ -10,8 +10,6 @@ from oscar.core.compat import AUTH_USER_MODEL
 class StockRecord(AbstractStockRecord):
     rent_cost = models.DecimalField(_("Rent Cost"), decimal_places=2, max_digits=12, blank=True, null=True)
 
-    rent_deposit = models.DecimalField(_("Rent Deposit"), decimal_places=2, max_digits=12, blank=True, null=True)
-
     rent_count = models.IntegerField(_("Rent Count"), null=True, default=0)
 
 class Partner(AbstractPartner):

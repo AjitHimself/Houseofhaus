@@ -153,18 +153,6 @@ OSCAR_DASHBOARD_NAVIGATION = [
     },
 
     {
-        'label': _('Designer'),
-        'icon': 'icon-bug',                   # for fa-bug we write 'icon-bug'
-        'children': [
-            {
-                'label': _('LookBooks'),
-                'url_name': 'dashboard:catalogue-product-list',
-                #url(r'designer/LookBooks/',views.LookbookListView.as_view(),)
-            },
-         ]
-    },
-
-    {
         'label': _('Offers'),
         'icon': 'icon-bullhorn',
         'children': [
