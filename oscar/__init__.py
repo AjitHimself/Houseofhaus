@@ -27,7 +27,7 @@ def get_version():
 # 'base.html' and 'oscar/base.html'.  This allows Oscar's templates to be
 # extended by templates with the same filename
 OSCAR_MAIN_TEMPLATE_DIR = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), 'templates_copy/oscar')
+    os.path.dirname(os.path.abspath(__file__)), 'templates/oscar')
 
 OSCAR_CORE_APPS = [
     'oscar',

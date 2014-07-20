@@ -498,6 +498,7 @@ OSCAR_ORDER_STATUS_CASCADE = {
 }
 
 
+'''
 #from designer import views
 OSCAR_DASHBOARD_NAVIGATION += [
   {
@@ -512,6 +513,8 @@ OSCAR_DASHBOARD_NAVIGATION += [
          ]
       },
 ]
+
+'''
 
 # LESS/CSS/statics
 # ================

@@ -29,11 +29,7 @@ class DesignerApplication(Application):
    
 
     def get_urls(self):
-        urls = [
-            #url(r'^products/(?P<pk>\d+)/$',
-             #   self.product_createupdate_view.as_view(),
-              #  name='catalogue-product'),
-            
+        urls = [            
             url(r'^lookbooks/$',
                 self.lookbook_list_view.as_view(),
                 name='catalogue-lookbook-list'),

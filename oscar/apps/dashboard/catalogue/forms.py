@@ -123,15 +123,6 @@ class StockRecordForm(forms.ModelForm):
         #fields = ('rent_deposit','price_excl_tax','num_in_stock')
         exclude = ('product', 'num_allocated')
 
-
-
-#############
-# class ProductRentDepositForm(forms.Form):
-#     class Meta:
-#         model = StockRecord
-#         fields = ('rent_deposit','num_allocated',)
-
-
 BaseStockRecordFormSet = inlineformset_factory(
     Product, StockRecord, form=StockRecordForm, extra=1)
 
