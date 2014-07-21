@@ -1,8 +1,0 @@
-{% load basket_tags %}     
-
-{% rent_form request rent as rent_form single %}
-<form  action="" method="POST">
-    {% csrf_token %}
-    {{ rent_form.as_table }}
-    <input id="submit" type="submit" value="Submit">
-</form>

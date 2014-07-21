@@ -26,7 +26,7 @@
         <div class="basket-title hidden-phone">
             <div class="row-fluid">
                 <h4 class="span6">{% trans "Items to buy now" %}</h4>
-                <!--<h4 class="span3">{% trans "Quantity" %}</h4>-->
+                <h4 class="span3">{% trans "Actions" %}</h4>
                 <h4 class="span1 align-right">{% trans "Price" %}</h4>
                 <h4 class="span2 align-right">{% trans "Total" %}</h4>
             </div>
@@ -59,11 +59,13 @@
                                 <h4>{% trans "Pick up on " %}{{ line.get_rent_end_date }}</h4>
                                 <p class="availability {{ session.availability.code }}">{{ session.availability.message }}</p>
                             </div>
-                        {% comment %}
+                        
                             <div class="span3">
                                 <div class="checkout-quantity control-group {% if form.errors %}error{% endif %}">
+                                    {% comment %}
                                     {{ form.quantity }}
                                     <button class="btn" type="submit">{% trans "Update" %}</button>
+                                    {% endcomment %}
                                     <p>
                                         <a href="#" data-id="{{ forloop.counter0 }}" data-behaviours="remove" class="inline">{% trans "Remove" %}</a>
                                         {% if request.user.is_authenticated %}
@@ -82,7 +84,8 @@
                                     </p>
                                 </div>
                             </div>
-                        {% endcomment %}
+
+
                             <div class="span1">
                                 <p class="price_color align-right">
                                     {% if line.is_tax_known %}
