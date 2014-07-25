@@ -348,7 +348,7 @@ LOGGING = {
 
 
 INSTALLED_APPS = [
-    'accounts',
+    'apps.accounts',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
