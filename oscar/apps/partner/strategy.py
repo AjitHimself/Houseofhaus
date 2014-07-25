@@ -258,16 +258,10 @@ class FixedRateTax(object):
             return prices.Unavailable()
         tax = (stockrecord.price_excl_tax * self.rate).quantize(self.exponent)
 
-        if stockrecord.rent_cost is None:
-            stockrecord.rent_cost = 0
-
-        rent_tax = (stockrecord.rent_cost * self.rate).quantize(self.exponent)
         return prices.TaxInclusiveFixedPrice(
             currency=stockrecord.price_currency,
             excl_tax=stockrecord.price_excl_tax,
-            excl_tax_rent_cost=stockrecord.rent_cost,
-            tax=tax,
-            rent_tax=rent_tax)
+            tax=tax)
 
     def group_pricing_policy(self, product, variant_stock):
         stockrecords = [x[1] for x in variant_stock if x[1] is not None]
@@ -278,16 +272,10 @@ class FixedRateTax(object):
         stockrecord = stockrecords[0]
         tax = (stockrecord.price_excl_tax * self.rate).quantize(self.exponent)
 
-        if stockrecord.rent_cost is None:
-            stockrecord.rent_cost = 0
-
-        rent_tax = (stockrecord.rent_cost * self.rate).quantize(self.exponent)
         return prices.FixedPrice(
             currency=stockrecord.price_currency,
             excl_tax=stockrecord.price_excl_tax,
-            #excl_tax_rent_cost=stockrecord.rent_cost,
-            tax=tax,)
-            #rent_tax=rent_tax)
+            tax=tax)
 
 
 class DeferredTax(object):
