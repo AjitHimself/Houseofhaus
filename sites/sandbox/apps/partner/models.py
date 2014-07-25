@@ -7,11 +7,6 @@ from oscar.apps.partner.abstract_models import AbstractStockRecord, AbstractPart
 from oscar.core.compat import AUTH_USER_MODEL
 
 
-class StockRecord(AbstractStockRecord):
-    rent_cost = models.DecimalField(_("Rent Cost"), decimal_places=2, max_digits=12, blank=True, null=True)
-
-    rent_count = models.IntegerField(_("Rent Count"), null=True, default=0)
-
 class Partner(AbstractPartner):
     designer = models.ForeignKey(AUTH_USER_MODEL, limit_choices_to={'is_designer': True},
                                  verbose_name=_("Partner name"), null=True, blank=True, unique=True)

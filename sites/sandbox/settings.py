@@ -348,6 +348,7 @@ LOGGING = {
 
 
 INSTALLED_APPS = [
+    'accounts',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -372,9 +373,7 @@ INSTALLED_APPS = [
     'compressor',       # Oscar's templates use compressor
     'apps.gateway',     # For allowing dashboard access
     'designer',
-    'rent',
     'apps.dashboard.designer',
-    'accounts',
     'request',
     'payzippy',
     'bootstrap3_datetime',

@@ -354,8 +354,6 @@ class BasketAddView(FormView):
             url = reverse('basket:summary')
         return url
 
-
-
 class VoucherAddView(FormView):
     form_class = BasketVoucherForm
     voucher_model = get_model('voucher', 'voucher')
