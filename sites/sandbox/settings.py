@@ -385,7 +385,7 @@ INSTALLED_APPS = INSTALLED_APPS + get_core_apps(['apps.catalogue','apps.order','
 
 #Don't forget the SITE_ID (A model for storing the domain and name attributes of a Web site. 
 #The SITE_ID setting specifies the database ID of the site object associated with that particular #settings file.)
-SITE_ID = 1
+SITE_ID = 2
 
 AUTH_USER_MODEL= 'accounts.Users'
 
