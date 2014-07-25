@@ -1,0 +1,9 @@
+
+@font-face {
+	font-family: 'Biko';
+	src: url('Biko.eot?') format('eot'), 
+	     url('Biko.otf')  format('opentype'),
+	     url('Biko.woff') format('woff'), 
+	     url('Biko.ttf')  format('truetype'),
+	     url('Biko.svg#Biko') format('svg');
+}

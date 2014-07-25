@@ -38,10 +38,8 @@
                 {% if not product.is_group %}
                     {% comment %}
                     {% include "catalogue/partials/add_to_basket_form_compact.html" %}
-                    {% include "catalogue/partials/add_rent_to_basket_form_compact.html" %}
-                    ************** Whatever added below is the rent button with link to product page
                     {% endcomment %}
-                    <a href="{{ product.get_absolute_url }}"><button type="submit" class="btn btn-primary btn-block">{% trans "Rent" %}</button></a>
+                    <a href="{{ product.get_absolute_url }}"><button type="submit" class="btn btn-primary btn-block">{% trans "View" %}</button></a>
                 {% endif %}
             </div>
         {% endblock %}

@@ -249,6 +249,7 @@ class FixedRateTax(object):
     stockrecord.  The price_incl_tax is quantized to two decimal places.
     Rounding behaviour is Decimal's default
     """
+    # @ajit: changed tax rate to 12%
     rate = D('0.12')  # Subclass and specify the correct rate
     exponent = D('0.01')  # Default to two decimal places
 

@@ -30,9 +30,6 @@ class Base(object):
     #: Retail price
     retail = None
 
-    #: Rent price
-    rent_cost = None
-
     #: Price currency (3 char code)
     currency = None
 
@@ -64,10 +61,6 @@ class FixedPrice(Base):
     def __init__(self, currency, excl_tax, tax=None):
         self.currency = currency
         self.excl_tax = excl_tax
-        # # @ajit: Rent cost is passed to constructor
-        # self.excl_tax_rent_cost = excl_tax_rent_cost
-        # # @ajit: Rent tax exclusively stored
-        # self.rent_tax = rent_tax
         self.tax = tax
 
     @property
@@ -90,27 +83,16 @@ class TaxInclusiveFixedPrice(FixedPrice):
     """
     exists = is_tax_known = True
 
-    def __init__(self, currency, excl_tax, excl_tax_rent_cost, tax, rent_tax):
+    def __init__(self, currency, excl_tax, tax):
         self.currency = currency
         self.excl_tax = excl_tax
-        # @ajit: Rent cost is passed to constructor
-        self.excl_tax_rent_cost = excl_tax_rent_cost
-        # @ajit: Rent tax exclusively stored
-        self.rent_tax = rent_tax
         self.tax = tax
 
     @property
     def incl_tax(self):
         return self.excl_tax + self.tax
 
-    @property
-    def incl_tax_rent_cost(self):
-        return self.excl_tax_rent_cost + self.rent_tax
 
     @property
     def effective_price(self):
         return self.incl_tax
-
-    @property
-    def effective_price_rent(self):
-        return self.incl_tax_rent_cost

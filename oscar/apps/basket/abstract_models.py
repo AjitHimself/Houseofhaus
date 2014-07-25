@@ -153,8 +153,7 @@ class AbstractBasket(models.Model):
         self.lines.all().delete()
         self._lines = None
 
-    # @ajit: added is_rent flag at the time of product addidtion to the basket    
-    def add_product(self, product, is_rent, rent_start_date, period, quantity=1, options=None):
+    def add_product(self, product, quantity=1, options=None):
         """
         Add a product to the basket
 
@@ -191,32 +190,16 @@ class AbstractBasket(models.Model):
 
         # Determine price to store (if one exists).  It is only stored for
         # audit and sometimes caching.
-        # @ajit: Have done some if-else conditions for Rent
-        if is_rent is True:
-            defaults = {
-                'quantity': quantity,
-                'price_excl_tax': stock_info.price.excl_tax_rent_cost,
-                'price_currency': stock_info.price.currency,
-                'is_rent': True,
-                'rent_start_date': rent_start_date,
-                'period': period
-            }
-        else:
-            defaults = {
-                'quantity': quantity,
-                'price_excl_tax': stock_info.price.excl_tax,
-                'price_currency': stock_info.price.currency,
-                'is_rent': False,
-                'rent_start_date': None,
-                'period': None
-            }
 
+        defaults = {
+            'quantity': quantity,
+            'price_excl_tax': stock_info.price.excl_tax,
+            'price_currency': stock_info.price.currency,
+        }
         if stock_info.price.is_tax_known:
-            if is_rent is True:
-                defaults['price_incl_tax'] = stock_info.price.incl_tax_rent_cost
-            else:
-                defaults['price_incl_tax'] = stock_info.price.incl_tax
+            defaults['price_incl_tax'] = stock_info.price.incl_tax
         print
+
         line, created = self.lines.get_or_create(
             line_reference=line_ref,
             product=product,
@@ -581,15 +564,6 @@ class AbstractLine(models.Model):
         'catalogue.Product', related_name='basket_lines',
         verbose_name=_("Product"))
 
-    # @ajit: Line is a product order and here rent flag is added to it
-    is_rent = models.BooleanField(_("Rent"), default=False)
-
-    # @ajit: Rent start date and Period should be stored in basket line
-    rent_start_date = models.DateTimeField(_('Rent start date'), null=True)
-
-    CHOICES = (('4', '4'), ('8', '8'))
-    period = models.IntegerField(_('Rent Period'), max_length=30, choices=CHOICES, null=True)
-
     # We store the stockrecord that should be used to fulfil this line.
     stockrecord = models.ForeignKey(
         'partner.StockRecord', related_name='basket_lines')
@@ -721,21 +695,6 @@ class AbstractLine(models.Model):
             return 0
         return self.unit_price_excl_tax / self.unit_price_incl_tax
 
-    # =======
-    # To fetch dates in only date format
-    # eg. In basket_content.html
-    # ========
-
-    @property
-    def get_rent_start_date(self):
-        return self.rent_start_date.date()
-
-    @property
-    def get_rent_end_date(self):
-        d = timedelta(days=self.period)
-        rent_end_date = self.get_rent_start_date + d
-        return rent_end_date
-
     # ==========
     # Properties
     # ==========
@@ -782,29 +741,17 @@ class AbstractLine(models.Model):
         The price to use for offer calculations
         """
         return self.purchase_info.price.effective_price
-
-    # @ajit: HAVE ADDED SOME IF_ELSE FOR RENT AND PURCHASE
-    # DIFFERENTIATION IN THE BASKET LINE
     @property
     def unit_price_excl_tax(self):
-        if self.is_rent is True:
-            return self.purchase_info.price.excl_tax_rent_cost
-        else:
-            return self.purchase_info.price.excl_tax
+        return self.purchase_info.price.excl_tax
 
     @property
     def unit_price_incl_tax(self):
-        if self.is_rent is True:
-            return self.purchase_info.price.incl_tax_rent_cost
-        else:
-            return self.purchase_info.price.incl_tax
+        return self.purchase_info.price.incl_tax
 
     @property
     def unit_tax(self):
-        if self.is_rent is True:
-            return self.purchase_info.price.rent_tax
-        else:
-            return self.purchase_info.price.tax
+        return self.purchase_info.price.tax
 
     @property
     def line_price_excl_tax(self):
@@ -863,10 +810,7 @@ class AbstractLine(models.Model):
         if not self.purchase_info.price.is_tax_known:
             return
 
-        # Compare current price to price when added to basket
-        # @ajit: changed incl_tax to incl_tax_rent_cost 
-        # for the crazy msg that was coming on basket page
-        current_price_incl_tax = self.purchase_info.price.incl_tax_rent_cost
+        current_price_incl_tax = self.purchase_info.price.incl_tax
         if current_price_incl_tax != self.price_incl_tax:
             product_prices = {
                 'product': self.product.get_title(),

@@ -35,6 +35,7 @@ class EventHandler(object):
         You will generally want to override this method to implement the
         specifics of you order processing pipeline.
         """
+        print "IM IN HANDLE SHIPPING EVENT"
         # Example implementation
         self.validate_shipping_event(
             order, event_type, lines, line_quantities, **kwargs)

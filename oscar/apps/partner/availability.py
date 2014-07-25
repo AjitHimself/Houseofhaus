@@ -33,14 +33,6 @@ class Base(object):
         # We test a purchase of a single item
         return self.is_purchase_permitted(1)[0]
 
-    @property
-    def is_available_to_rent(self):
-        """
-        Test if this product is available to be rented.
-        """
-        # We test a rent of a single item
-        return self.is_rent_permitted(1)[0]
-
     def is_purchase_permitted(self, quantity):
         """
         Test whether a proposed purchase is allowed
@@ -49,13 +41,6 @@ class Base(object):
         """
         return False, _("unavailable")
 
-    def is_rent_permitted(self, quantity):
-        """
-        Test whether a proposed rent is allowed
-
-        Should return a boolean and a reason
-        """
-        return False, _('unavailable')
 
 # Common availability policies
 
@@ -81,9 +66,6 @@ class Available(Base):
     def is_purchase_permitted(self, quantity):
         return True, ""
 
-    def is_rent_permitted(self, quantity):
-        return True, ""
-
 
 class StockRequired(Base):
     """
@@ -101,15 +83,6 @@ class StockRequired(Base):
         self.num_available = num_available
 
     def is_purchase_permitted(self, quantity):
-        if self.num_available == 0:
-            return False, _("no stock available")
-        if quantity > self.num_available:
-            msg = _("a maximum of %(max)d can be bought") % {
-                'max': self.num_available}
-            return False, msg
-        return True, ""
-
-    def is_rent_permitted(self, quantity):
         if self.num_available == 0:
             return False, _("no stock available")
         if quantity > self.num_available:

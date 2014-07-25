@@ -12,7 +12,7 @@ class LineInline(admin.TabularInline):
 
 class LineAdmin(admin.ModelAdmin):
     list_display = ('id', 'basket', 'product', 'stockrecord', 'quantity',
-                    'price_excl_tax', 'price_currency', 'date_created','is_rent')
+                    'price_excl_tax', 'price_currency', 'date_created')
     readonly_fields = ('basket', 'stockrecord', 'line_reference', 'product',
                        'price_currency', 'price_incl_tax', 'price_excl_tax',
                        'quantity')
