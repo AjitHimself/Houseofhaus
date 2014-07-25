@@ -113,35 +113,3 @@ class DesVideoUrl(models.Model):
 	video_url = models.URLField(blank=True)
 	
 
-
-
-		# def save(self, request, *args, **kwargs):
-	# 	if not self.id:
-	# 		self.date_created = self.last_edited + 
-	# 		self.email = request.user.email
-	# 		super(DesignerRequest, self).save(*args, **kwargs)
-
-"""
-class DesLookbook(models.Model):
-    
-	designer= models.ForeignKey('Designer', verbose_name=_("Designer"),null=True, blank=True)
-    
-	name= models.CharField(_("Lookbook name"),max_length=128,null=True,unique= True)
-
-	products= models.ManyToManyField(Product, verbose_name=_("Product"), related_name= 'des_product', null=True,blank=True)
-
-
-
-	description= models.TextField(_("Message"))
-
-	class Meta:
-		verbose_name = _("Designer Lookbook")
-		verbose_name_plural = _("Designer Lookbooks")
-
-	def __unicode__(self):
-		return unicode(self.name)
-
-"""
-
-
-
