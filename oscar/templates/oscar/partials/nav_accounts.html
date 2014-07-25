@@ -40,6 +40,9 @@
                                 </a>
                             {% else %}
                                 <a href="{% url 'customer:summary' %}"><i class="icon-user"></i> {% trans "Account" %}</a>
+                                {% if not user.is_designer %}
+                                <li><a href="{% url 'request:designer-request' %}"><i class="icon-bug"></i> {% trans "For Designers" %}</a></li>
+                                {% endif %}
                             {% endif %}
                         </li>
                         {% if user.is_staff or perms.partner.dashboard_access %}
