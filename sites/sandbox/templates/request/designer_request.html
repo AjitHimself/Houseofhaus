@@ -1,46 +1,49 @@
 {% extends "layout.html" %}
-
+{% load url from future %}   <!--to recognize the urls like href="{{ login_url }} -->
 {% load i18n %}
+{% load account %}
+
 
 {% block title %}
-    {% trans 'Register' %} | {{ block.super }}
+{% trans 'Register' %} | {{ block.super }}
 {% endblock %}
 
 {% block breadcrumbs %}
-    <ul class="breadcrumb">
-        <li>
-            <a href="{{ homepage_url }}">{% trans 'Home' %}</a>
-            <span class="divider">/</span>
-        </li>
-        <li class="active">{% trans 'Request' %}</li>
-    </ul>
+<ul class="breadcrumb">
+    <li>
+        <a href="{{ homepage_url }}">{% trans 'Home' %}</a>
+        <span class="divider">/</span>
+    </li>
+    <li class="active">{% trans 'Request' %}</li>
+</ul>
 {% endblock %}
+
 
 {% block headertext %}
-    {% trans "Join as Designer on HOH **You need to be logged in" %}
+    {% if user.is_authenticated %}
+        {% trans "Start your brand new boutique on House of haus" %}
+    {% else %}
+        {% trans "You need to Sign Up on House of Haus before opening your boutique !!!" %}
+        <a href="{{ signup_url }}">Sign Up</a>
+    {% endif %}
 {% endblock %}
 
-
-<!-- No need to metion form.visible_fields or {{ form.as_p }}  thses will be taken care by form_field.html
- -->
-<!-- 
-<form action="" method="post">{% csrf_token %}
-    {{ form.as_p }}  ###IT displays all the form field of form referenced by form_class
-    <input type="submit" value="Update" />
-</form> -->
-
-
 {% block content %}
-    <div class="row-fluid">
-        <div class="span6 register_form">
-            <form action="." enctype="multipart/form-data" "method="post" class="well">
-                {% csrf_token %}
-                {% include "partials/form_fields.html"  %}
-                <button name="registration_submit" type="submit" value="Submit Request" class="btn btn-primary btn-large js-disable-on-click" data-loading-text="{%trans 'Submitting...' %}">{% trans 'Submit Request' %}</button>
-                {% if cancel_url %}
-                    {% trans "or" %} <a href="{{ cancel_url }}">{% trans "cancel" %}</a>.
-                {% endif %}
+
+{% if user.is_authenticated %}
+<div class="row-fluid">
+    <div class="span6 register_form">
+        <form action="." enctype="multipart/form-data" "method="post" class="well">
+            {% csrf_token %}
+            {% include "partials/form_fields.html"  %}
+            <button name="registration_submit" type="submit" value="Submit Request" class="btn btn-primary btn-large js-disable-on-click" data-loading-text="{%trans 'Submitting...' %}">{% trans 'Submit Request' %}</button>
+            {% if cancel_url %}
+            {% trans "or" %} <a href="{{ cancel_url }}">{% trans "cancel" %}</a>.
+            {% endif %}
             </form>
         </div>
-    </div>
+   </div>
+{% endif %}
 {% endblock content %}
+
+

@@ -27,7 +27,7 @@ User = get_user_model()
 
 class DesignerRequestForm(forms.ModelForm):
 
-    name = forms.CharField(label =_('Your name'), help_text="Please enter your name",required = False)
+    name = forms.CharField(label =_('Your Boutiques Name'),required = False)
     #name = forms.CharField(label =_('Your name'), help_text="Please enter your name",widget=forms.HiddenInput())
 
     email = forms.EmailField(label=_('Email address'),required = False)
@@ -52,7 +52,7 @@ class DesignerRequestForm(forms.ModelForm):
 
     class Meta:
         model = DesignerRequest
-        fields = ('name', 'email','contact','gender','speciality','date_requested','label','profile_pic','description',) # tuple
+        fields = ('name', 'email','contact','speciality','date_requested','label','description',) # tuple
 
     def clean_email(self):
         email = normalise_email(self.cleaned_data['email'])

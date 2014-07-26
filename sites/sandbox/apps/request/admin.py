@@ -10,7 +10,7 @@ from request.forms import DesignerRequestForm
 
 class DesignerRequestAdmin(admin.ModelAdmin):
 	form = DesignerRequestForm
-	list_display = ('name','speciality','gender','description',) 
+	list_display = ('name','speciality','description',) 
 	list_display_links = ('name',) 
 	list_filter = ('date_requested',)
 	list_per_page = 50 

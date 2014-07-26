@@ -17,10 +17,7 @@ class DesignerRequest(models.Model):
 	name = models.CharField(_('Name'), max_length=255, null=True, editable = False)
 
 	email = models.EmailField(_('Email ID'), unique=True, null =True, editable = False)
-	
-	gender= models.CharField(max_length=30, choices= {('Male','Male'), 
-	                                                                                 ('Female','Female'),}, null=True )
-	
+		
 	contact = models.CharField(validators=[RegexValidator(regex='^[0-9]{10}$', message='Enter a valid phone no.', code='nomatch')], max_length=10, null=True)
 
 	
@@ -42,8 +39,6 @@ class DesignerRequest(models.Model):
 	date_requested = models.DateTimeField(_('Request Date'),auto_now_add=True, null=True)
 
 	label = models.CharField(_('Label u belong to'), max_length=255,blank=True,null=True)
-
-	profile_pic = models.ImageField(upload_to='Designer/Profile', blank=True, null= True)
 
 	description = models.TextField(_('Something about you'), blank= True)
 

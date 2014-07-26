@@ -21,10 +21,8 @@ class Designer(models.Model):
 	slug = models.SlugField(_('Slug'), max_length=255,editable=False)
 
 	gender= models.CharField(max_length=30, choices= {('Male','Male'), 
-
-
-	                                                                                 ('Female','Female'),}, null=True )
-	#email = models.EmailField(_('Email ID'), unique=True, null =True)
+			('Female','Female'),}, null=True )
+	
 	date_joined = models.DateTimeField(_('Date joined'),auto_now_add=True, null=True)
 
 	profile_pic = models.ImageField(upload_to='Designer/Profile', blank=True, null= True)
