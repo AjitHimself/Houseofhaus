@@ -5,14 +5,19 @@ from oscar.apps.customer.abstract_models import AbstractUser
 from oscar.core.compat import AUTH_USER_MODEL
 
 from django.contrib.auth.models import User
-
-
-
+from oscar.models.fields import NullCharField, AutoSlugField
 
 class Users(AbstractUser):
+	gender= models.CharField(max_length=30, choices= {('M','Male'), 
+		('F','Female'),}, null=True, blank=True )
+
 	is_designer = models.BooleanField(
 		_('Is Designer'), default=False,
-		help_text=_('Designates whether this user should be treated as '
-					'Designer. Used in Partner and LookBook'),)
+		help_text=_('Used in Partner and LookBook'),)
 
+	twitter_link = models.CharField(max_length=255, null=True, blank=True)
+	facebook_link = models.CharField(max_length=255, null=True, blank=True)
+	instagram_link = models.CharField(max_length=255, null=True, blank=True)
+
+	profile_pic = models.ImageField(upload_to='Accounts/Profile_pictures', blank=True, null= True)
 

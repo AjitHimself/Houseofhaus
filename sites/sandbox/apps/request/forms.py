@@ -28,19 +28,10 @@ User = get_user_model()
 class DesignerRequestForm(forms.ModelForm):
 
     name = forms.CharField(label =_('Your Boutiques Name'),required = False)
-    #name = forms.CharField(label =_('Your name'), help_text="Please enter your name",widget=forms.HiddenInput())
-
     email = forms.EmailField(label=_('Email address'),required = False)
-    #email = forms.EmailField(label=_('Email address'),widget=forms.HiddenInput())
-    #gender = forms.CharField(label='Select your gender',help_text="No size limit")
-    #label = forms.CharField(label = _('Do u belong to any label'), blank=True, max_length=128, help_text="Please enter your name")
-    
     #profile_pic = forms.ImageField(label=_('Your pic'),blank= True)
-
     #description = forms.TextField(_('Tell us something about u'))
-    
     date_requested=forms.DateTimeField(widget=forms.HiddenInput(),help_text='Submission Date',initial=datetime.datetime.now())
-    
     # password1 = forms.CharField(
     #     label=_('Password'), widget=forms.PasswordInput,
     #     validators=password_validators)

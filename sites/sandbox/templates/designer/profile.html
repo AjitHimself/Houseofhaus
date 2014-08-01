@@ -18,15 +18,18 @@
 {% block breadcrumbs %}
     <ul class="breadcrumb">
         <li>
-            <a href="{{ homepage_url }}"><strong>Home</strong>/</a>
+            <a href="{{ homepage_url }}"><strong>{% trans "Home " %}</strong>/</a>
            <!--  <span class="divider">/</span> -->
         </li>
-            <li class="active">{{designer}}</li>
+        <li>
+            <a href="{% url 'designer:list' %}">{% trans "Designers " %}/</a>
+        </li>
+        <li class="active">{{designer}}</li>
     </ul>
 {% endblock breadcrumbs %}
 
 {% block column_left %}
-<p>ghgjhgj</p>
+<p>This is block column left.</p>
 {% endblock %}
 
 {% block content %}
@@ -36,10 +39,12 @@
 <p>{{designer.name}}</p>
 <p>{{designer.date_joined}}</p>
 
-<b>MY LooKBooks:---</b>
+<b>LookBooks </b>
+
 <br><br>
+
 {% for lookbook in designer.lookbooks.all %}
-<p><strong>{{lookbook.name}}</strong></p>
+	<p><strong>{{lookbook.name}}</strong></p>
 
 {% for product in lookbook.products.all %}
         {% block product_image %}
@@ -52,7 +57,13 @@
             </div>
         {% endblock %}
 {% endfor %}
-
 <li class="divider"></li>
 {% endfor %}        
+
+<b>Styles </b>
+	{% for post in posts.all %}
+		{% block post %}
+			<strong>{{ post.name }}</strong>
+		{% endblock post %}
+	{% endfor %}
 {% endblock %}

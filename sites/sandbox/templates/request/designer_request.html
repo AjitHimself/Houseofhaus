@@ -30,20 +30,18 @@
 
 {% block content %}
 
-{% if user.is_authenticated %}
 <div class="row-fluid">
     <div class="span6 register_form">
         <form action="." enctype="multipart/form-data" "method="post" class="well">
             {% csrf_token %}
             {% include "partials/form_fields.html"  %}
-            <button name="registration_submit" type="submit" value="Submit Request" class="btn btn-primary btn-large js-disable-on-click" data-loading-text="{%trans 'Submitting...' %}">{% trans 'Submit Request' %}</button>
+            <button name="registration_submit" type="submit" value="Submit Request" class="btn btn-primary btn-large js-disable-on-click" data-loading-text="{%trans "Submitting..." %}"">{% trans "Submit Request" %}</button>
             {% if cancel_url %}
             {% trans "or" %} <a href="{{ cancel_url }}">{% trans "cancel" %}</a>.
             {% endif %}
             </form>
         </div>
    </div>
-{% endif %}
 {% endblock content %}
 
 

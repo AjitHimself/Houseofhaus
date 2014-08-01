@@ -376,9 +376,8 @@ INSTALLED_APPS = [
     'apps.dashboard.designer',
     'request',
     'payzippy',
-    'bootstrap3_datetime',
-    #'filters',
-]
+    'endless_pagination',
+    ]
 from oscar import get_core_apps
 INSTALLED_APPS = INSTALLED_APPS + get_core_apps(['apps.catalogue','apps.order','apps.partner','apps.dashboard'])
 

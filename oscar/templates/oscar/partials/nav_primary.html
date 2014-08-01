@@ -63,29 +63,20 @@
                             {% endblock %}
                             <li class="divider"></li>
 
-                            {% block designer %}
+                    {% block nav_extra %}
+                        {% block designer %}
                             <li class="dropdown-submenu">
-                                <a tabindex="-1" href="{% url 'designer:list' %}">Designer {{count}}</a>
-                                <!-- {% if designers %} -->
+                                <a tabindex="-1" href="{% url 'designer:list' %}">{% trans "Designers" %}</a>
                                 <ul class="dropdown-menu">
                                 {% for des in designers %}
-                                
                                  <li><a tabindex="-1" href="{{ des.get_absolute_url }}">{{ des.name }}</a></li>
-                                    
                                 {% endfor %}
                                 </ul>
-                                <!-- {% endif %} -->
-                                <!-- <ul class="dropdown-menu">
-                                    <li><a tabindex="-1" href="/en-gb/catalogue/category/books/fiction_3/">Vashi Medhne</a></li>
-                                    <li><a tabindex="-1" href="/en-gb/catalogue/category/books/non-fiction_5/">Manik Ray</a></li>
-                                    </ul></li> -->
-                            {% endblock %}
-                        
-                    </li>
-                    {% block nav_extra %}
-                    {% endblock %}
+                            </li>
+                        {% endblock designer %}
+                    {% endblock nav_extra %}
                 </ul>
-            {% endblock %}
+            {% endblock nav_dropdown %}
             {% include "partials/search.html" %}
         </div><!-- /nav-collapse -->
 
