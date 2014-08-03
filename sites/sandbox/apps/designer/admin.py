@@ -106,7 +106,7 @@ class DesLookbookAdmin(admin.ModelAdmin):
 """
 
 
-admin.site.register(Designer, DesignerAdmin) 
+admin.site.register(Designer) 
 admin.site.register(DesignerPost, DesPostAdmin) 
 admin.site.register(DesPostCategory, DesPostCategoryAdmin) 
 #admin.site.register(DesLookbook, DesLookbookAdmin) 

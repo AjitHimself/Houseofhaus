@@ -7,41 +7,41 @@
 {% block body_class %}{{ block.super }} catalogue{% endblock %}
 
 {% block title %}
-    {% trans "Lookbooks" %} | {{ block.super }}
+{% trans "Lookbooks" %} | {{ block.super }}
 {% endblock %}
 
 {% block breadcrumbs %}
-    <ul class="breadcrumb">
-        <li>
-            <a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a>
-            <span class="divider">/</span>
-        </li>
-        <li class="active">{% trans "Lookbooks" %}</li>
-    </ul>
+<ul class="breadcrumb">
+    <li>
+        <a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a>
+        <span class="divider">/</span>
+    </li>
+    <li class="active">{% trans "Lookbooks" %}</li>
+</ul>
 {% endblock %}
 
 {% block header %}
-    <div class="page-header action">
-        <h1>{% trans "Lookbooks" %}</h1>
-    </div>
+<div class="page-header action">
+    <h1>{% trans "Lookbooks" %}</h1>
+</div>
 
-    <ul>
-{% for lookbook in lookbooks %}
+<ul>
+    {% for lookbook in lookbooks %}
     <li>{{ lookbook.name }} - {{ lookbook.designer }} - {{ lookbook.description }} - 
-    {% for product in lookbook.products.all %}
-    <li>
-    	{% with image=product.primary_image %}
-                                            {% thumbnail image.original "70x70" upscale=False as thumb %}
-                                            <a href="{{ image.original.url }}" rel="lightbox_{{ product.upc|default:"-" }}" class="sub-image">
-                                                <img src="{{ thumb.url }}" alt="{{ product.get_title }}" data-description="{% if image.caption %}{{ image.caption }}{% endif %}">
-                                            </a>
-                                            {% endthumbnail %}
-                                        {% endwith %}
+        {% for product in lookbook.products.all %}
+        <li>
+           {% with image=product.primary_image %}
+           {% thumbnail image.original "70x70" upscale=False as thumb %}
+           <a href="{{ image.original.url }}" rel="lightbox_{{ product.upc|default:"-" }}" class="sub-image">
+            <img src="{{ thumb.url }}" alt="{{ product.get_title }}" data-description="{% if image.caption %}{{ image.caption }}{% endif %}">
+        </a>
+        {% endthumbnail %}
+        {% endwith %}
     </li>
     {% endfor %}
-    </li>
+</li>
 {% empty %}
-    <li>No Lookbooks yet.</li>
+<li>No Lookbooks yet.</li>
 {% endfor %}
 </ul>
 

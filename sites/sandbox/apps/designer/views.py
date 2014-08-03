@@ -30,7 +30,6 @@ class Designer_list(ListView):
 
 
     def get_context_data(self, **kwargs):
-        p = DesLookbook.objects.all()
         context = super(Designer_list, self).get_context_data(**kwargs)
         context['designers'] = Designer.objects.all()
         context['lookbooks'] = DesLookbook.objects.all()
@@ -40,7 +39,6 @@ class Designer_list(ListView):
 class Designer_profile(DetailView):
     model = Designer
     template_name = 'designer/profile.html'
-
     # def get_object(self):
     #     if 'pk' in self.kwargs:
     #         self.designer = get_object_or_404(Designer, pk=self.kwargs['pk'])
@@ -55,7 +53,8 @@ class Designer_profile(DetailView):
     #         self.designer = None  
 
     def get_context_data(self, **kwargs):
-        designer = Designer.objects.get(id=self.kwargs['pk'])
+        designer = User.objects.get(id=self.kwargs['pk'])
+        print "GET CONTEXT DATA"
         posts = DesignerPost.objects.get(designer=self.kwargs['pk'])
         context = super(Designer_profile, self).get_context_data(**kwargs)
         context['designer'] = designer

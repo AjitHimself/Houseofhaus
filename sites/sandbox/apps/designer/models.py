@@ -7,34 +7,21 @@ from oscar.core.compat import AUTH_USER_MODEL
 
 
 class Designer(models.Model):
-    name = models.CharField(_('Name'), max_length=255, editable=False, null=True)
     designer = models.ForeignKey(AUTH_USER_MODEL, limit_choices_to={'is_designer': True},
                                  verbose_name=_("Designer Email"), null=True, blank=True, unique=True)
-    # first_name = models.CharField(_('First name'), max_length=255, blank=True, null=True)
-    # last_name = models.CharField(_('Last name'), max_length=255, blank=True, null= True)
 
     slug = models.SlugField(_('Slug'), max_length=255, editable=False)
 
-    gender = models.CharField(max_length=30, choices={('Male', 'Male'),
-                                                      ('Female', 'Female'), }, null=True)
-
-    date_joined = models.DateTimeField(_('Date joined'), auto_now_add=True, null=True)
-
-    profile_pic = models.ImageField(upload_to='Designer/Profile', blank=True, null=True)
-
     def save(self, *args, **kwargs):
-        #if not self.id:
         super(Designer, self).save(*args, **kwargs)
-        full_name = self.designer.first_name + " " + self.designer.last_name
-        self.name = full_name
         self.slug = self.designer.first_name + "-" + self.designer.last_name
         super(Designer, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('designer:profile', kwargs={'designer_slug': self.slug, 'pk': self.id})
+        return reverse('designer:profile', kwargs={'designer_slug': self.slug, 'pk': self.designer.id})
 
     def __unicode__(self):
-        return unicode(self.name)
+        return unicode(self.designer.get_full_name())
 
 
 class DesPostCategory(models.Model):
@@ -69,17 +56,6 @@ class DesignerPost(models.Model):
     def __unicode__(self):
         post_description = '%s: %s' % (self.designer, self.name)
         return unicode(post_description)
-
-        # def save(self, request, *args, **kwargs):
-        # self.name = request.user.username
-        # self.email = request.user.email
-        # 	super(DesignerRequest, self).save(*args, **kwargs)
-
-        # def save(self, request, obj, form, change):
-        #     obj.name = self.request.user
-        #     obj.email= self.cleaned_data['email']
-        #     obj.save()
-
 
 class DesPostImage(models.Model):
     post = models.ForeignKey(DesignerPost, related_name='postimage')

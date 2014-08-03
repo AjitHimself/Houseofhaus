@@ -6,64 +6,89 @@
 {% load staticfiles %}
 
 {% block title %}
-    {{ summary }} | {{ block.super }}
+{{ summary }} | {{ block.super }}
 {% endblock %}
 
 {% block description %}
-    {{ category.description|default:""|striptags }}
+{{ category.description|default:""|striptags }}
 {% endblock %}
 
 {% block headertext %}{{ summary }}{% endblock %}
 
 {% block breadcrumbs %}
-    <ul class="breadcrumb">
-        <li>
-            <a href="{{ homepage_url }}"><strong>{% trans "Home " %}</strong>/</a>
-           <!--  <span class="divider">/</span> -->
-        </li>
-        <li>
-            <a href="{% url 'designer:list' %}">{% trans "Designers " %}/</a>
-        </li>
-        <li class="active">{{designer}}</li>
-    </ul>
+<ul class="breadcrumb">
+	<li>
+		<a href="{{ homepage_url }}"><strong>{% trans "Home " %}</strong>/</a>
+		<!--  <span class="divider">/</span> -->
+	</li>
+	<li>
+		<a href="{% url 'designer:list' %}">{% trans "Designers " %}/</a>
+	</li>
+	<li class="active">{{designer}}</li>
+</ul>
 {% endblock breadcrumbs %}
 
 {% block column_left %}
-<p>This is block column left.</p>
+<b>This is block column left.</b>
 {% endblock %}
 
 {% block content %}
 
-<img src="{{MEDIA_URL}}{{ designer.profile_pic }}" alt="{{ designer.designer }}" height="15%" width="20%">
-<br><br>
-<p>{{designer.name}}</p>
-<p>{{designer.date_joined}}</p>
+<img src="{{MEDIA_URL}}{{ designer.designer.profile_pic }}" alt="{{ designer.designer }}" height="15%" width="20%">
+</br></br>
 
-<b>LookBooks </b>
+<table class="table table-striped table-bordered">
+	<tbody>
+		<tr>
+			<th>{% trans 'Name' %}</th>
+			<td>{{ designer.designer.get_full_name|default:'-' }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'Email address' %}</th>
+			<td>{{ designer.designer.email }}</td>
+		</tr>
+		{% block profile_fields %}
+		{% for field in profile_fields %}
+		<tr>
+			<th>{{ field.name }}</th>
+			<td>{{ field.value|default:"-" }}</td>
+		</tr>
+		{% endfor %}
+		{% endblock %}
+		<tr>
+			<th>{% trans 'Date registered' %}</th>
+			<td>{{ designer.date_joined }}</td>
+		</tr>
+		<tr>
+			<th>{% trans 'Lookbooks' %}</th>
+			<td>{% for lookbook in designer.lookbooks.all %}
+				<p><strong>{{lookbook.name}}</strong></p>
 
-<br><br>
+				{% for product in lookbook.products.all %}
+				{% block product_image %}
+				<div class="image_container">
+					{% with image=product.primary_image %}
+					{% thumbnail image.original "x155" upscale=False as thumb %}
+					<a href="{{ product.get_absolute_url }}"><img src="{{ thumb.url }}" alt="{{ product.get_title }}" class="thumbnail"></a>
+					{% endthumbnail %}
+					{% endwith %}
+				</div>
+				{% endblock %}
+				{% endfor %}
+				<li class="divider"></li>
+				{% endfor %}</td>
+			</tr>
+			<tr>
+				<th>{% trans 'Styles' %}</th>
+				<td>{% for post in designer.DesignerPost.all %}
+					{% block post %}
+					<strong>{{ post.name }}</strong>
+					{% endblock post %}
+					{% empty %}
+					<p>No Styles uploaded yet</p>
+					{% endfor %}</td>
+				</tr>
+			</tbody>
+		</table>
+		{% endblock %}
 
-{% for lookbook in designer.lookbooks.all %}
-	<p><strong>{{lookbook.name}}</strong></p>
-
-{% for product in lookbook.products.all %}
-        {% block product_image %}
-            <div class="image_container">
-                {% with image=product.primary_image %}
-                    {% thumbnail image.original "x155" upscale=False as thumb %}
-                    <a href="{{ product.get_absolute_url }}"><img src="{{ thumb.url }}" alt="{{ product.get_title }}" class="thumbnail"></a>
-                    {% endthumbnail %}
-                {% endwith %}
-            </div>
-        {% endblock %}
-{% endfor %}
-<li class="divider"></li>
-{% endfor %}        
-
-<b>Styles </b>
-	{% for post in posts.all %}
-		{% block post %}
-			<strong>{{ post.name }}</strong>
-		{% endblock post %}
-	{% endfor %}
-{% endblock %}

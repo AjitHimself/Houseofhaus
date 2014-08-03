@@ -69,7 +69,7 @@
                                 <a tabindex="-1" href="{% url 'designer:list' %}">{% trans "Designers" %}</a>
                                 <ul class="dropdown-menu">
                                 {% for des in designers %}
-                                 <li><a tabindex="-1" href="{{ des.get_absolute_url }}">{{ des.name }}</a></li>
+                                 <li><a tabindex="-1" href="{{ des.get_absolute_url }}">{{ des.designer.get_full_name }}</a></li>
                                 {% endfor %}
                                 </ul>
                             </li>
