@@ -13,8 +13,7 @@ class Designer(models.Model):
     slug = models.SlugField(_('Slug'), max_length=255, editable=False)
 
     def save(self, *args, **kwargs):
-        super(Designer, self).save(*args, **kwargs)
-        self.slug = self.designer.first_name + "-" + self.designer.last_name
+        self.slug = self.designer.username
         super(Designer, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -22,7 +21,7 @@ class Designer(models.Model):
 
     def __unicode__(self):
         return unicode(self.designer.get_full_name())
-
+        
 
 class DesPostCategory(models.Model):
     designer = models.ForeignKey(Designer, related_name='desig')
@@ -66,4 +65,6 @@ class DesVideoUrl(models.Model):
     post = models.ForeignKey(DesignerPost, related_name='postvideo')
     video_url = models.URLField(blank=True)
 	
+
+
 

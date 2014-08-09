@@ -2,6 +2,7 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from request.forms import *
 from oscar.core.compat import get_user_model
+from django.shortcuts import get_object_or_404
 # from . import signals
 from django.views.generic import ListView, DetailView
 from designer.models import Designer, DesignerPost
@@ -39,9 +40,9 @@ class Designer_list(ListView):
 class Designer_profile(DetailView):
     model = Designer
     template_name = 'designer/profile.html'
-    # def get_object(self):
-    #     if 'pk' in self.kwargs:
-    #         self.designer = get_object_or_404(Designer, pk=self.kwargs['pk'])
+    def get_object(self):
+        if 'pk' in self.kwargs:
+            self.designer = get_object_or_404(Designer, pk=self.kwargs['pk'])
 
     #     elif 'category_slug' in self.kwargs:
     #         # For SEO reasons, we allow chopping off bits of the URL. If that
@@ -54,7 +55,11 @@ class Designer_profile(DetailView):
 
     def get_context_data(self, **kwargs):
         designer = User.objects.get(id=self.kwargs['pk'])
-        print "GET CONTEXT DATA"
+        
+        print "GET CONTEXT DATA---->"
+        print designer.pk
+        print designer.username
+
         posts = DesignerPost.objects.get(designer=self.kwargs['pk'])
         context = super(Designer_profile, self).get_context_data(**kwargs)
         context['designer'] = designer

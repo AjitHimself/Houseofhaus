@@ -377,6 +377,7 @@ INSTALLED_APPS = [
     'request',
     'payzippy',
     'endless_pagination',
+    'relationships',    # Social relationships between users
     ]
 from oscar import get_core_apps
 INSTALLED_APPS = INSTALLED_APPS + get_core_apps(['apps.catalogue','apps.order','apps.partner','apps.dashboard'])

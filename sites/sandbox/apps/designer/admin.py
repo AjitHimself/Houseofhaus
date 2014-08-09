@@ -21,12 +21,12 @@ class DesLookbookInline(admin.TabularInline):
 
 class DesignerAdmin(admin.ModelAdmin):
 	user__email = getter_for_related_field('designer__email', short_description='Designer Email-id')
-	readonly_fields=('name',)
-	list_display = ('name','user__email','date_joined') 
+	readonly_fields=('username',)
+	list_display = ('username','user__email','date_joined') 
 	list_display_links = ('name','date_joined') 
 	list_filter = ('date_joined',)
 	list_per_page = 50 
-	ordering = ['-name'] 	
+	ordering = ['-username'] 	
 	inlines = [DesLookbookInline]
 
 

@@ -24,8 +24,9 @@ urlpatterns = [
     
     url(r'^sitemap-(?P<section>.+)\.xml$',
         'django.contrib.sitemaps.views.sitemap', {'sitemaps': base_sitemaps}),
+    # @ajit: URLS added for allauth access
     url(r'^accnt/', include('allauth.urls')),
-    #url(r'^accounts/', include('allauth.urls', namespace='allauth', app_name='allauth')),
+    url(r'^relationships/', include('relationships.urls')),
 ]
 
 # Prefix Oscar URLs with language codes
@@ -35,10 +36,10 @@ urlpatterns += i18n_patterns('',
     url(r'request/', include('apps.request.urls', namespace='request', app_name='request')),
     # @vivek: added new url for designer access on first page
     url(r'designer/', include('apps.designer.urls', namespace='designer', app_name='designer')),
-    # @ajit: Payment fateway URL
+    # @ajit: Payment gateway URL
     url(r'payzippy/', include('apps.payzippy.urls', namespace='payzippy', app_name='payzippy')),
-
-    #url(r'designer/', include('apps.designer.urls', namespace='dashboard', app_name='designer'), ),  ##ADDED BY ME
+    # @ajit: Relationships URL
+    # url(r'relationships/', include('relationships.urls', namespace='relationships', app_name='relationships')),
     # Oscar's normal URLs
     url(r'', include(shop.urls)),
 
